@@ -1,6 +1,6 @@
 # Fusion 数智业务中台
 
-一套基于 **Spring Boot 4 + Vue 3** 的企业级后台管理系统基座，14 个 Maven 模块、12 个业务模块，约 **44 万行源码**（Java 29.8 万行 / Vue 18.7 万行）。
+一套基于 **Spring Boot 4 + Vue 3** 的企业级后台管理系统基座，**32 个 Maven 模块**（14 个一级模块，商城再下分 5 个子模块）、**11 个业务模块**，约 **48 万行源码**（Java 29.8 万行 / Vue 18.7 万行）。
 
 > 本仓库是**改造工程成果的展示副本**：用于呈现架构设计、模块划分与工程化改造过程。
 > 出于公开与安全考虑，**本仓库不含任何真实凭据、内部过程产物与运行环境**，也**不承诺开箱即跑通** —— 详细边界见文末「本仓库的定位与边界」。
@@ -64,22 +64,22 @@ Fusion 由一套开源后台脚手架（芋道 ruoyi-vue-pro / yudao-ui-admin-vu
 
 ## 三、模块划分
 
-### 后端（14 个 Maven 模块）
+### 后端（14 个一级 Maven 模块，共 32 个）
 
 ```
 fusion-dependencies      依赖版本统一管理（BOM）
-fusion-framework         框架层：26 个 starter（web / security / mybatis / redis / mq / job / monitor / excel / desensitize …）
+fusion-framework         框架层：13 个 starter（web / security / mybatis / redis / mq / job / monitor / excel / websocket / 租户 / 数据权限 / IP / test）+ common 工具集
 fusion-server            启动模块（聚合所有业务模块）
 ├── fusion-module-system   系统管理   用户 / 组织 / 角色 / 权限 / 菜单 / 字典 / 日志 / OAuth2 / 短信 / 邮件 / 社交登录
 ├── fusion-module-infra    基础设施   代码生成 / 文件存储 / 配置中心 / 定时任务 / 访问日志 / API 日志
-├── fusion-module-bpm      工作流     Flowable 引擎 / 流程设计器 / 任务审批 / 动态表单
-├── fusion-module-report   报表大屏   积木报表（JimuReport）+ GoView 数据大屏
-├── fusion-module-ai       AI 能力    对话 / 写作 / 思维导图 / 知识库 / 文生图 / 模型与密钥管理 / MCP
-├── fusion-module-mall     商城系统   商品 / 营销 / 交易 / 统计
-├── fusion-module-member   会员中心   会员 / 等级 / 积分 / 签到
-├── fusion-module-pay      支付管理   支付 / 退款 / 转账 / 钱包 / 回调
-├── fusion-module-erp      ERP 系统   采购 / 销售 / 库存 / 财务（53 张表）
-├── fusion-module-crm      CRM 系统   客户 / 商机 / 合同 / 回款（51 张表）
+├── fusion-module-bpm      工作流     Flowable 引擎 / 流程设计器 / 任务审批 / 动态表单（8 张表 + Flowable 引擎表）
+├── fusion-module-report   报表大屏   积木报表（JimuReport）+ GoView 数据大屏（1 张表 + 可选 20 张）
+├── fusion-module-ai       AI 能力    对话 / 写作 / 思维导图 / 知识库 / 文生图 / 模型与密钥管理 / MCP（14 张表）
+├── fusion-module-mall     商城系统   商品 / 营销 / 交易 / 统计（下分 5 个子模块，49 张表）
+├── fusion-module-member   会员中心   会员 / 等级 / 积分 / 签到（11 张表）
+├── fusion-module-pay      支付管理   支付 / 退款 / 转账 / 钱包 / 回调（14 张表）
+├── fusion-module-erp      ERP 系统   采购 / 销售 / 库存 / 财务（33 张表）
+├── fusion-module-crm      CRM 系统   客户 / 商机 / 合同 / 回款（21 张表）
 └── fusion-module-mes      MES 系统   制造执行：基础数据 / 计划 / 生产 / 质量 / 库存（133 张表）
 ```
 
@@ -94,7 +94,7 @@ fusion-server            启动模块（聚合所有业务模块）
 | `system` 系统管理 | 68 | `erp` 企业资源 | 63 |
 | `bpm` 工作流 | 45 | `member` 会员 | 32 |
 | `infra` 基础设施 | 26 | `pay` 支付 | 23 |
-| `report` 报表 | 3 | 登录/个人中心等 | 16 |
+| `report` 报表 | 3 | 登录/个人中心/错误页等 | 21 |
 
 ---
 
@@ -105,7 +105,7 @@ fusion-server            启动模块（聚合所有业务模块）
 后端采用 **依赖管理（BOM）+ 框架层 starter 化 + 业务模块自治** 的三层结构：
 
 - `fusion-dependencies`：集中锁定所有三方依赖版本，业务模块不写版本号；
-- `fusion-framework`：把横切能力做成 26 个可插拔 starter，业务模块按需引入；
+- `fusion-framework`：把横切能力做成 13 个可插拔 starter（另含 `fusion-common` 工具集），业务模块按需引入；
 - `fusion-module-*`：每个模块自持 `controller / service / dal / convert / enums / framework` 分层，模块间只通过 `api` 包（DTO + 接口）通信，不直接依赖彼此的 DAL。
 
 ### 关键机制
@@ -133,11 +133,11 @@ fusion-server            启动模块（聚合所有业务模块）
 
 ```
 .
-├── fusion/                          后端（Spring Boot 4 / Maven 多模块）
+├── fusion/                          后端（Spring Boot 4 / Maven 多模块，共 32 个模块）
 │   ├── fusion-dependencies/         依赖 BOM
-│   ├── fusion-framework/            26 个框架 starter
+│   ├── fusion-framework/            13 个框架 starter + common 工具集
 │   ├── fusion-server/               启动模块 + 配置
-│   ├── fusion-module-*/             12 个业务模块
+│   ├── fusion-module-*/             11 个业务模块
 │   └── sql/mysql/                   建表 SQL + 迁移脚本
 ├── fusion-ui-admin/                 前端（Vue 3 + Vite + Element Plus）
 │   ├── src/api/                     按模块组织的接口层
