@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A1 — 厚腰星（Solid Spark）  ← 优化目标：小尺寸可辨识性
+  这是 A 最实际的工程问题：凹口太深，16px 下四个尖角互相糊在一起，
+  只剩一个模糊的点。把凹口从 8.0 抬到 11.95（半径的 42.7%），
+  曲线控制点由 p=0.75/q=5.0 改为 p=2.2/q=11.0 —— 剪影仍是四角星，
+  但腰部有了足够的"肉"，缩到 16px 依然能读出四个尖角。
+  代价：比 A 略"敦实"，锐利感少一点。（这是必要的取舍）
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="厚腰星">
+  <defs>
+    <linearGradient id="a1g" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M 32 4 C 34.2 21, 43 29.8, 60 32 C 43 34.2, 34.2 43, 32 60 C 29.8 43, 21 34.2, 4 32 C 21 29.8, 29.8 21, 32 4 Z"
+        fill="url(#a1g)"/>
+</svg>

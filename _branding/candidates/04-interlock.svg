@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  候选 04 — 双环交织（Interlocked Loops）
+  理念：两个环相交出中间的交集区 —— 最简洁的「融合」符号（交集 = 结合部）；
+  两个交点上的节点带来数据/电路的科技感。
+  关键词：融合 · 交集 · 双主体合一
+  颜色：环 #409EFF；交集节点 #409EFF -> #36CFC9 渐变
+  说明：中点 (32,32)，两心间距 14，半径 15 -> 交点 y = 32 ± sqrt(15²−7²) ≈ 18.73 / 45.27
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="双环交织">
+  <defs>
+    <linearGradient id="c4g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="#409EFF" stroke-width="5.5">
+    <circle cx="25" cy="32" r="15"/>
+    <circle cx="39" cy="32" r="15"/>
+  </g>
+  <circle cx="32" cy="18.73" r="3.2" fill="url(#c4g)"/>
+  <circle cx="32" cy="45.27" r="3.2" fill="url(#c4g)"/>
+</svg>

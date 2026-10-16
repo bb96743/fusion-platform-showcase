@@ -1,0 +1,117 @@
+# ============================================================================
+#  Fusion 一键编排（MySQL + Redis + 后端 + 前端）
+#
+#  用法：
+#    1) 复制环境变量模板并按需修改：
+#         copy .env.example .env
+#    2) 起基础设施：
+#         docker compose up -d mysql redis
+#    3) 起应用：
+#         docker compose up -d --build server admin
+#    4) 看日志 / 健康：
+#         docker compose logs -f server
+#         curl http://127.0.0.1:48080/actuator/health
+#       前端：http://127.0.0.1:8080
+#
+#  ⚠️ 本文件**尚未在真实 Docker 上验证过**（开发机未安装 Docker）。
+#     两个已知的首次使用注意事项：
+#       · MySQL 只在**数据卷为空**时执行 docker-entrypoint-initdb.d 里的脚本，
+#         所以改完 SQL 要重建：docker compose down -v  （会删数据！）
+#       · 种子里的管理员口令是占位符，**首次启动后必须设置一次**：
+#           docker compose exec mysql mysql -uroot -p$MYSQL_ROOT_PASSWORD fusion \
+#             -e "select password from system_users where id=1"     # 确认仍是占位符
+#         然后在本机跑 _tooling\14-set-admin-password.ps1（改的是本机库，不是容器库），
+#         或直接把 BCrypt 哈希 UPDATE 进容器库。详见 fusion/README.md 的「容器部署」一节。
+# ============================================================================
+
+name: fusion
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fusion-mysql
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?请在 .env 里设置 MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-fusion}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # ⚠️ 顺序敏感：MySQL 按**文件名字典序**执行，所以用 01_/02_/... 前缀固定顺序。
+      #    ③ quartz.sql 必须在 ② 之后（它的清理段依赖 ② 清过的 infra_job），见 需求分析文档.md 13.16.7。
+      - ./fusion/sql/mysql/fusion-init.sql:/docker-entrypoint-initdb.d/01-fusion-init.sql:ro
+      - ./fusion/sql/mysql/fusion-modules.sql:/docker-entrypoint-initdb.d/02-fusion-modules.sql:ro
+      - ./fusion/sql/mysql/quartz.sql:/docker-entrypoint-initdb.d/03-quartz.sql:ro
+      - ./fusion/sql/mysql/migrations/V001__seed-ai-chat-roles.sql:/docker-entrypoint-initdb.d/04-migration-V001.sql:ro
+      - ./fusion/sql/mysql/optional/jimureport-ddl-only.sql:/docker-entrypoint-initdb.d/05-jimureport.sql:ro
+      - ./fusion/sql/mysql/optional/jimureport-supplement-2.5.1.sql:/docker-entrypoint-initdb.d/06-jimureport-supplement.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: fusion-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "no"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      # 上下文必须是整个 fusion\（多模块 Maven 工程）
+      context: ./fusion
+      dockerfile: fusion-server/Dockerfile
+    image: fusion-server:${FUSION_VERSION:-1.0.0}
+    container_name: fusion-server
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "${SERVER_PORT:-48080}:48080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      # 与 application-prod.yaml 中的占位变量一一对应
+      FUSION_DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-fusion}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+      FUSION_DB_USERNAME: root
+      FUSION_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      FUSION_REDIS_HOST: redis
+      FUSION_REDIS_PORT: "6379"
+      FUSION_SITE_URL: ${FUSION_SITE_URL:-http://localhost:8080}
+      FUSION_TENANT_ENABLE: ${FUSION_TENANT_ENABLE:-true}
+      # 大模型密钥：也可留空，改用管理后台「AI 大模型 → API 密钥」（走数据库配置）
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx1024m -Duser.home=/app -Djava.security.egd=file:/dev/./urandom}
+
+  admin:
+    build:
+      context: ./fusion-ui-admin
+      dockerfile: Dockerfile
+    image: fusion-admin:${FUSION_VERSION:-1.0.0}
+    container_name: fusion-admin
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "${ADMIN_PORT:-8080}:80"
+
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local

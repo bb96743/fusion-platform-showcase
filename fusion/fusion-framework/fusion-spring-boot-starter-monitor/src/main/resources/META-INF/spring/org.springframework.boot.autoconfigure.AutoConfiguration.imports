@@ -1,0 +1,2 @@
+com.fusion.framework.tracer.config.FusionTracerAutoConfiguration
+com.fusion.framework.tracer.config.FusionMetricsAutoConfiguration

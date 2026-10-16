@@ -1,0 +1,2 @@
+com.fusion.framework.quartz.config.FusionQuartzAutoConfiguration
+com.fusion.framework.quartz.config.FusionAsyncAutoConfiguration

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>明暗方案对比</title>
+<style>
+  body { margin:0; background:#F5F6F8; color:#111827;
+    font:14px/1.55 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif; }
+  .wrap { max-width:1180px; margin:0 auto; padding:26px 22px 40px; }
+  h1 { font-size:21px; margin:0 0 6px; }
+  .sub { color:#6B7280; font-size:12.5px; margin:0 0 18px; }
+  .note { background:#fff; border:1px solid #E5E7EB; border-left:3px solid #409EFF;
+    border-radius:8px; padding:12px 14px; font-size:13px; margin-bottom:20px; }
+  table { border-collapse:separate; border-spacing:0; width:100%; background:#fff;
+    border:1px solid #E5E7EB; border-radius:12px; overflow:hidden; }
+  th, td { padding:12px 14px; text-align:left; border-bottom:1px solid #F1F3F5; }
+  th { background:#FAFBFC; font-size:11.5px; color:#6B7280; font-weight:600; }
+  tr:last-child td { border-bottom:none; }
+  .opt { font-weight:700; font-size:14px; }
+  .desc { font-size:11.5px; color:#6B7280; margin-top:2px; }
+  .pair { display:flex; gap:14px; align-items:flex-end; }
+  .cellbox { text-align:center; }
+  .cellbox .lbl { font-size:10.5px; color:#6B7280; margin-bottom:4px; }
+  /* 真实显示尺寸：侧边栏 40px / 登录页 48px / 标签页 16px */
+  .on-dark, .on-light { border-radius:8px; padding:8px; display:flex; gap:10px; align-items:center; }
+  .on-dark { background:#001529; }
+  .on-light { background:#fff; border:1px solid #E5E7EB; }
+  .on-dark img, .on-light img { display:block; }
+  .s40 { width:40px; height:40px; }
+  .s16 { width:16px; height:16px; }
+  .badge { font-size:10.5px; padding:1px 6px; border-radius:99px; font-weight:600; }
+  .b-ok { background:#ECFDF5; color:#047857; }
+  .b-weak { background:#FEF3C7; color:#B45309; }
+  .b-cur { background:#E0E7FF; color:#4338CA; }
+  .big { width:76px; height:76px; display:block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>明暗方案对比 —— 目标是「一眼看出白底/黑底之分」</h1>
+  <p class="sub">当前两版只差 22% 明度（L=66% vs 44%），都是蓝紫渐变，缩到 40px 确实分不出。下面是 4 个可辨度更高的方案 + 当前基线。</p>
+
+  <div class="note">
+    <b>看什么：</b>每行给出「大图」和「真实尺寸」两种。<b>请重点看最右侧 40px / 16px 那两栏</b> ——
+    那里才是侧边栏与标签页的实际显示大小。大小图都看得出差异，才算真的可辨。
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:210px">方案</th>
+        <th style="width:110px">大图</th>
+        <th>深底 #001529 上（40px / 16px）</th>
+        <th>白底 #ffffff 上（40px / 16px）</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>
+          <div class="opt">当前基线 <span class="badge b-cur">线上</span></div>
+          <div class="desc">亮 #8B5CF6→#409EFF (L=66%)<br>暗 #490CD5→#006EE0 (L=44%)<br>
+            <b>差 22% 明度 → 难辨</b></div>
+        </td>
+        <td><div class="pair">
+          <div class="cellbox"><div class="lbl">亮</div><img class="big" src="baseline-light.png"></div>
+          <div class="cellbox"><div class="lbl">暗</div><img class="big" src="baseline-dark.png"></div>
+        </div></td>
+        <td><div class="on-dark">
+          <img class="s40" src="baseline-light.png"><img class="s40" src="baseline-dark.png">
+          <img class="s16" src="baseline-light.png"><img class="s16" src="baseline-dark.png">
+        </div></td>
+        <td><div class="on-light">
+          <img class="s40" src="baseline-light.png"><img class="s40" src="baseline-dark.png">
+          <img class="s16" src="baseline-light.png"><img class="s16" src="baseline-dark.png">
+        </div></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="opt">方案1 白底 / 黑底盒</div>
+          <div class="desc">方盒改白/近黑，火花仍是品牌渐变<br><b>差异最直观</b>，且保留品牌色</div>
+        </td>
+        <td><div class="pair">
+          <div class="cellbox"><div class="lbl">亮</div><img class="big" src="opt1-light.svg"></div>
+          <div class="cellbox"><div class="lbl">暗</div><img class="big" src="opt1-dark.svg"></div>
+        </div></td>
+        <td><div class="on-dark">
+          <img class="s40" src="opt1-light.svg"><img class="s40" src="opt1-dark.svg">
+          <img class="s16" src="opt1-light.svg"><img class="s16" src="opt1-dark.svg">
+        </div></td>
+        <td><div class="on-light">
+          <img class="s40" src="opt1-light.svg"><img class="s40" src="opt1-dark.svg">
+          <img class="s16" src="opt1-light.svg"><img class="s16" src="opt1-dark.svg">
+        </div></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="opt">方案2 白底 / 黑底 + 纯白火花</div>
+          <div class="desc">暗版火花改纯白<br>黑白对比最强，<b>但暗版不带品牌色</b></div>
+        </td>
+        <td><div class="pair">
+          <div class="cellbox"><div class="lbl">亮</div><img class="big" src="opt2-light.svg"></div>
+          <div class="cellbox"><div class="lbl">暗</div><img class="big" src="opt2-dark.svg"></div>
+        </div></td>
+        <td><div class="on-dark">
+          <img class="s40" src="opt2-light.svg"><img class="s40" src="opt2-dark.svg">
+          <img class="s16" src="opt2-light.svg"><img class="s16" src="opt2-dark.svg">
+        </div></td>
+        <td><div class="on-light">
+          <img class="s40" src="opt2-light.svg"><img class="s40" src="opt2-dark.svg">
+          <img class="s16" src="opt2-light.svg"><img class="s16" src="opt2-dark.svg">
+        </div></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="opt">方案3 极浅 / 极深（同色系）</div>
+          <div class="desc">#F5F1FE→#DBEDFF vs #1B044D→#002347<br>
+            保持 A5 镂空；<b>浅版在白底上几乎隐形</b></div>
+        </td>
+        <td><div class="pair">
+          <div class="cellbox"><div class="lbl">亮</div><img class="big" src="opt3-light.svg"></div>
+          <div class="cellbox"><div class="lbl">暗</div><img class="big" src="opt3-dark.svg"></div>
+        </div></td>
+        <td><div class="on-dark">
+          <img class="s40" src="opt3-light.svg"><img class="s40" src="opt3-dark.svg">
+          <img class="s16" src="opt3-light.svg"><img class="s16" src="opt3-dark.svg">
+        </div></td>
+        <td><div class="on-light">
+          <img class="s40" src="opt3-light.svg"><img class="s40" src="opt3-dark.svg">
+          <img class="s16" src="opt3-light.svg"><img class="s16" src="opt3-dark.svg">
+        </div></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="opt">方案4 明度拉极限（L=80% / 20%）</div>
+          <div class="desc">#BA9EFA→#99CBFF vs #210561→#003266<br>
+            保持 A5 镂空与形状</div>
+        </td>
+        <td><div class="pair">
+          <div class="cellbox"><div class="lbl">亮</div><img class="big" src="opt4-light.svg"></div>
+          <div class="cellbox"><div class="lbl">暗</div><img class="big" src="opt4-dark.svg"></div>
+        </div></td>
+        <td><div class="on-dark">
+          <img class="s40" src="opt4-light.svg"><img class="s40" src="opt4-dark.svg">
+          <img class="s16" src="opt4-light.svg"><img class="s16" src="opt4-dark.svg">
+        </div></td>
+        <td><div class="on-light">
+          <img class="s40" src="opt4-light.svg"><img class="s40" src="opt4-dark.svg">
+          <img class="s16" src="opt4-light.svg"><img class="s16" src="opt4-dark.svg">
+        </div></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+package com.fusion.module.crm.framework.permission.core;

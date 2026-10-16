@@ -1,0 +1,84 @@
+# ============================================================================
+#  .gitattributes —— 检出/入库的换行与二进制判定
+#
+#  本仓库主要在 Windows 上开发（PowerShell 5.1 + GBK 环境），但会跨平台（CI / 部署）。
+#  这里只做两件事，**不改变任何现有文件的换行**（避免一次几万行的无意义 diff）：
+#    1) 明确哪些是二进制 —— 防止 git 误做文本转换而损坏图片/字体/jar；
+#    2) 明确哪些按文本处理 —— 保证 diff 正常、合并不出错。
+#
+#  换行策略：沿用 Windows 的 core.autocrlf=true（仓库内 LF，检出为 CRLF）。
+#  若日后要统一成「检出也 LF」，改这里加 eol=lf 并执行
+#    git add --renormalize .
+#  一次性完成规范化（会产生一次大范围 diff，建议单独一个提交）。
+# ============================================================================
+
+# ---- 二进制：禁止任何文本转换 ----
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.bmp   binary
+*.webp  binary
+*.svgz  binary
+*.zip   binary
+*.7z    binary
+*.gz    binary
+*.jar   binary
+*.war   binary
+*.class binary
+*.exe   binary
+*.dll   binary
+*.so    binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.pdf   binary
+*.xlsx  binary
+*.xls   binary
+*.docx  binary
+*.pptx  binary
+
+# ---- 文本：按文本处理（diff / merge 正常）----
+*.java  text
+*.kt    text
+*.sql   text
+*.xml   text
+*.yml   text
+*.yaml  text
+*.json  text
+*.properties text
+*.vm    text
+*.ftl   text
+*.ts    text
+*.tsx   text
+*.js    text
+*.mjs   text
+*.cjs   text
+*.vue   text
+*.css   text
+*.scss  text
+*.less  text
+*.html  text
+*.md    text
+*.txt   text
+*.ps1   text
+*.bat   text
+*.cmd   text
+*.sh    text
+
+# ---- 语言统计：把生成物排除在 GitHub 语言统计之外 ----
+fusion-ui-admin/dist-prod/**   linguist-generated=true
+fusion/sql/mysql/fusion-init.sql linguist-generated=true
+
+# ---- git 钩子必须是 LF ----
+# Git for Windows 用 sh 执行钩子，CRLF 会导致 "bad interpreter" / 语法错误。
+.githooks/* text eol=lf
+# ---- 必须是 LF（CRLF 会破坏它们）----
+# Dockerfile：行尾续行符 `\` 后面跟 CRLF 会导致构建语法错误
+Dockerfile*  text eol=lf
+# shell 脚本：CRLF 会让 bash 报 "bad interpreter: /bin/sh^M"
+*.sh         text eol=lf
+# nginx 配置：CRLF 一般能解析，但统一 LF 更省事
+*.conf       text eol=lf

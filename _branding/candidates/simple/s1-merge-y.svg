@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  S1 — 汇流 Y（Bold Merge）
+  简化思路：把上一版「三流汇一」的 4 条曲线压成 **2 条粗笔画的 Y**。
+  融合＝两路汇成一路，是合并最简的通用符号；单色、无细节、16px 下依然成立。
+  关键词：融合 · 合并 · 汇聚
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="汇流 Y">
+  <g fill="none" stroke="#409EFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 13 L32 31 L51 13"/>
+    <path d="M32 31 V53"/>
+  </g>
+</svg>

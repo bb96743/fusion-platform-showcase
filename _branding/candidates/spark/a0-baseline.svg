@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A0 — 原版基准（Baseline）
+  按你概念板里的「A · 智能闪光」复刻，仅用于与本系列优化版并排对比。
+  几何：四角星，臂长 28（外接半径），凹口最深点距中心 8.0（＝半径的 28.6%）。
+  曲线控制点参数 p=0.75, q=5.0 —— 数字越小凹口越深、臂越细。
+  已知短板（本系列要解决的）：
+    ① 凹口过深，16px 下会糊成一个模糊的点/叉；
+    ② 只讲 AI，不讲「融合」；
+    ③ 四角星已是 AI 产品通用符号，缺自有细节；
+    ④ 紫罗兰不在项目主题色内。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="原版基准">
+  <defs>
+    <linearGradient id="a0g" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M 32 4 C 32.75 27, 37 31.25, 60 32 C 37 32.75, 32.75 37, 32 60 C 31.25 37, 27 32.75, 4 32 C 27 31.25, 31.25 27, 32 4 Z"
+        fill="url(#a0g)"/>
+</svg>

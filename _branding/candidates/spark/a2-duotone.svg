@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A2 — 双色融星（Duotone Spark）  ← 优化目标：补上「融合」语义
+  A 只讲 AI，不讲融合。这里**剪影完全不动**（沿用 A1 的厚腰几何），
+  只沿中轴把星切成左右两色：两半合成一颗星 ＝ 融合。
+  这是零成本改造 —— 形状一个点都没改，语义却补上了，
+  而且 16px 下两色分界仍看得见（色差比形状细节更耐缩小）。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="双色融星">
+  <defs>
+    <clipPath id="a2L"><rect x="0" y="0" width="32" height="64"/></clipPath>
+    <clipPath id="a2R"><rect x="32" y="0" width="32" height="64"/></clipPath>
+  </defs>
+  <g clip-path="url(#a2L)">
+    <path d="M 32 4 C 34.2 21, 43 29.8, 60 32 C 43 34.2, 34.2 43, 32 60 C 29.8 43, 21 34.2, 4 32 C 21 29.8, 29.8 21, 32 4 Z"
+          fill="#8B5CF6"/>
+  </g>
+  <g clip-path="url(#a2R)">
+    <path d="M 32 4 C 34.2 21, 43 29.8, 60 32 C 43 34.2, 34.2 43, 32 60 C 29.8 43, 21 34.2, 4 32 C 21 29.8, 29.8 21, 32 4 Z"
+          fill="#409EFF"/>
+  </g>
+</svg>

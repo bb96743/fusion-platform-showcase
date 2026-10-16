@@ -1,0 +1,1 @@
+package com.fusion.module.crm.dal.mysql.permission;

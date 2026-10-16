@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  S6 — 交叠方块（Layered Blocks）
+  简化思路：**两个错位的圆角方块**，双色区分两个来源，交叠即融合。
+  关键修正（2026-10-05 渲染复核）：最初错位 12 单位、方块 34，
+  在 16px 下两个块几乎重合、读成一个色块。
+  改为**错位 14 单位、方块缩到 32**，小尺寸下两块轮廓分得更开。
+  关键词：融合 · 模块化合体 · 层叠
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="交叠方块">
+  <rect x="9"  y="9"  width="32" height="32" rx="9" fill="#409EFF"/>
+  <rect x="23" y="23" width="32" height="32" rx="9" fill="#36CFC9"/>
+</svg>

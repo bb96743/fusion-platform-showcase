@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  H5 — 对角双色（Diagonal Split）   ← 杂交自「B 融合方块」+ S2 双半合圆
+  一个 App 图标方块被**对角线切成两色**，中央压一颗白核。
+  比 B 的"渐变+紫角"更大胆、也更简洁：两色对角＝两个来源合成一体，
+  且即使缩到 16px 仍能看出「两个色块」。
+  关键词：融合（两色合一）· AI 白核 · 强对比
+  3 个元素（两个三角 + 白点），用 clipPath 收进圆角。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="对角双色">
+  <defs>
+    <clipPath id="h5c"><rect x="6" y="6" width="52" height="52" rx="15"/></clipPath>
+  </defs>
+  <g clip-path="url(#h5c)">
+    <path d="M6 6 H58 V58 Z" fill="#8B5CF6"/>
+    <path d="M6 6 V58 H58 Z" fill="#409EFF"/>
+  </g>
+  <circle cx="32" cy="32" r="8" fill="#FFFFFF"/>
+</svg>

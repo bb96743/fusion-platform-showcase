@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fusion 系统图标候选（6 套）</title>
+<style>
+  :root {
+    --brand: #409EFF;
+    --brand-2: #36CFC9;
+    --ink: #1A1A1A;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --surface: #FFFFFF;
+    --page: #F5F6F8;
+    --menu-bg: #001529;       /* 取自 var.css --left-menu-bg-color */
+    --menu-text: #bfcbd9;     /* 取自 var.css --left-menu-text-color */
+    --dark-surface: #0d1117;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  header.top { margin-bottom: 28px; }
+  header.top h1 { margin: 0 0 8px; font-size: 26px; letter-spacing: .2px; }
+  .kw { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 16px; padding: 0; list-style: none; }
+  .kw li {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px;
+    background: rgba(64,158,255,.12); color: #1d6fbf; font-weight: 600;
+  }
+  .note {
+    background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--brand);
+    border-radius: 8px; padding: 14px 16px; font-size: 13.5px; color: #374151;
+  }
+  .note b { color: var(--ink); }
+  .note code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 26px; }
+  @media (max-width: 1040px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px)  { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .card h2 { margin: 0; font-size: 16px; display: flex; align-items: baseline; gap: 8px; }
+  .card h2 .no {
+    font-size: 12px; font-weight: 700; color: #fff; background: var(--brand);
+    border-radius: 6px; padding: 2px 7px;
+  }
+  .card h2 .en { font-size: 12px; font-weight: 500; color: var(--muted); }
+
+  /* 大图对比：浅底 / 深底 */
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile {
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    height: 152px; border: 1px solid var(--line);
+  }
+  .tile.light { background: #ffffff; }
+  .tile.dark { background: var(--menu-bg); border-color: transparent; }
+  .tile img { width: 112px; height: 112px; display: block; }
+  .tile .cap {
+    position: absolute; }
+
+  /* 真实尺寸阶梯 */
+  .ladder { display: grid; gap: 8px; }
+  .ladder .row { display: flex; align-items: center; gap: 10px; }
+  .ladder .lbl { width: 104px; flex: none; font-size: 11.5px; color: var(--muted); }
+  .pair { display: flex; gap: 8px; align-items: center; }
+  .chip {
+    width: 68px; height: 62px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; border: 1px solid var(--line);
+  }
+  .chip.light { background: #fff; }
+  .chip.dark { background: var(--menu-bg); border-color: transparent; }
+  .chip img { display: block; }
+
+  /* 侧边栏实景 */
+  .side {
+    background: var(--menu-bg); border-radius: 10px; padding: 10px 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .side img { width: 40px; height: 40px; display: block; flex: none; }
+  .side .brand { display: flex; flex-direction: column; line-height: 1.2; }
+  .side .brand b { color: #fff; font-size: 15px; font-weight: 700; }
+  .side .brand span { color: var(--menu-text); font-size: 11px; }
+
+  .desc { margin: 0; font-size: 13px; color: #4B5563; }
+  .desc b { color: var(--ink); }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: -4px; }
+  .tags span {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px;
+    background: #F3F4F6; color: #4B5563;
+  }
+  footer.foot { margin-top: 32px; font-size: 12.5px; color: var(--muted); }
+  footer.foot b { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Fusion 系统图标候选 · 6 套</h1>
+    <ul class="kw">
+      <li>融合</li><li>AI</li><li>科技感</li>
+    </ul>
+    <div class="note">
+      <b>看什么：</b>每套都同时给出 <b>浅底（#ffffff）</b> 与 <b>深底（#001529，即侧边栏真实底色）</b>，
+      并按 <b>48px（登录页）／40px（侧边栏）／16px（浏览器标签）</b> 三个真实显示尺寸渲染 ——
+      请重点看 <b>16px 是否还认得出</b>，以及<b>在两种底色上是否都清晰</b>（这是你选的方案 a 的前提）。
+      <br><b>配色来源：</b>主色 <code>#409EFF</code> 取自 <code>app.ts</code> 的 <code>elColorPrimary</code>；
+      辅助色 <code>#36CFC9</code>；深底 <code>#001529</code> 取自 <code>var.css</code>。未自创品牌色。
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- 01 -->
+    <article class="card">
+      <h2><span class="no">01</span>三流汇一 <span class="en">Converging Streams</span></h2>
+      <div class="stage">
+        <div class="tile light"><img src="01-converge.svg" alt="三流汇一（浅底）"></div>
+        <div class="tile dark"><img src="01-converge.svg" alt="三流汇一（深底）"></div>
+      </div>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span>
+          <div class="pair"><div class="chip light"><img src="01-converge.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="01-converge.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span>
+          <div class="pair"><div class="chip light"><img src="01-converge.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="01-converge.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span>
+          <div class="pair"><div class="chip light"><img src="01-converge.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="01-converge.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <div class="side"><img src="01-converge.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">三条数据流自左汇入一点，再合成一条主干。<b>“融合”最直白的隐喻</b>，同时带数据汇聚的技术意味。</p>
+      <div class="tags"><span>融合</span><span>数据汇聚</span><span>方向感</span></div>
+    </article>
+
+    <!-- 02 -->
+    <article class="card">
+      <h2><span class="no">02</span>神经核心 <span class="en">Neural Core</span></h2>
+      <div class="stage">
+        <div class="tile light"><img src="02-neural.svg" alt="神经核心（浅底）"></div>
+        <div class="tile dark"><img src="02-neural.svg" alt="神经核心（深底）"></div>
+      </div>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span>
+          <div class="pair"><div class="chip light"><img src="02-neural.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="02-neural.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span>
+          <div class="pair"><div class="chip light"><img src="02-neural.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="02-neural.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span>
+          <div class="pair"><div class="chip light"><img src="02-neural.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="02-neural.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <div class="side"><img src="02-neural.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">四个外围节点连向中心核 —— <b>神经网络的最小完整结构</b>，AI 语义最强；多路汇于一核也是融合。</p>
+      <div class="tags"><span>AI</span><span>神经节点</span><span>中心算力</span></div>
+    </article>
+
+    <!-- 03 -->
+    <article class="card">
+      <h2><span class="no">03</span>F 电路 <span class="en">F Circuit</span></h2>
+      <div class="stage">
+        <div class="tile light"><img src="03-monogram-f.svg" alt="F 电路（浅底）"></div>
+        <div class="tile dark"><img src="03-monogram-f.svg" alt="F 电路（深底）"></div>
+      </div>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span>
+          <div class="pair"><div class="chip light"><img src="03-monogram-f.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="03-monogram-f.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span>
+          <div class="pair"><div class="chip light"><img src="03-monogram-f.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="03-monogram-f.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span>
+          <div class="pair"><div class="chip light"><img src="03-monogram-f.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="03-monogram-f.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <div class="side"><img src="03-monogram-f.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">首字母 F 画成一条连续电路走线，中段分支点即“汇入”。<b>品牌识别最强（一眼是 F）</b>，科技感来自电路式直角。</p>
+      <div class="tags"><span>品牌首字母</span><span>电路走线</span><span>分支汇聚</span></div>
+    </article>
+
+    <!-- 04 -->
+    <article class="card">
+      <h2><span class="no">04</span>双环交织 <span class="en">Interlocked Loops</span></h2>
+      <div class="stage">
+        <div class="tile light"><img src="04-interlock.svg" alt="双环交织（浅底）"></div>
+        <div class="tile dark"><img src="04-interlock.svg" alt="双环交织（深底）"></div>
+      </div>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span>
+          <div class="pair"><div class="chip light"><img src="04-interlock.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="04-interlock.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span>
+          <div class="pair"><div class="chip light"><img src="04-interlock.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="04-interlock.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span>
+          <div class="pair"><div class="chip light"><img src="04-interlock.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="04-interlock.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <div class="side"><img src="04-interlock.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">两环相交出中间交集区，交点上加节点。<b>“融合”最简洁的抽象</b>（交集＝结合部），结构对称、久看不厌。</p>
+      <div class="tags"><span>融合</span><span>交集</span><span>对称</span></div>
+    </article>
+
+    <!-- 05 -->
+    <article class="card">
+      <h2><span class="no">05</span>六边核心 <span class="en">Hex Core</span></h2>
+      <div class="stage">
+        <div class="tile light"><img src="05-hexcore.svg" alt="六边核心（浅底）"></div>
+        <div class="tile dark"><img src="05-hexcore.svg" alt="六边核心（深底）"></div>
+      </div>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span>
+          <div class="pair"><div class="chip light"><img src="05-hexcore.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="05-hexcore.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span>
+          <div class="pair"><div class="chip light"><img src="05-hexcore.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="05-hexcore.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span>
+          <div class="pair"><div class="chip light"><img src="05-hexcore.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="05-hexcore.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <div class="side"><img src="05-hexcore.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">六边外壳＋三辐条汇聚到中心核，<b>芯片／AI 加速器的典型意象</b>，科技感最“硬”；多路汇入一核同样是融合。</p>
+      <div class="tags"><span>AI 芯片</span><span>核心算力</span><span>六边几何</span></div>
+    </article>
+
+    <!-- 06 -->
+    <article class="card">
+      <h2><span class="no">06</span>无限交织 <span class="en">Infinity Weave</span></h2>
+      <div class="stage">
+        <div class="tile light"><img src="06-infinity.svg" alt="无限交织（浅底）"></div>
+        <div class="tile dark"><img src="06-infinity.svg" alt="无限交织（深底）"></div>
+      </div>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span>
+          <div class="pair"><div class="chip light"><img src="06-infinity.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="06-infinity.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span>
+          <div class="pair"><div class="chip light"><img src="06-infinity.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="06-infinity.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span>
+          <div class="pair"><div class="chip light"><img src="06-infinity.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="06-infinity.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <div class="side"><img src="06-infinity.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">两环在结点交汇成无限符号：<b>融合（两环合一）＋ 持续学习（无限演进）</b>。双色区分两个来源，交汇处为“合”。</p>
+      <div class="tags"><span>融合</span><span>持续学习</span><span>无限演进</span></div>
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <p><b>怎么选：</b>先看 16px 那行 —— 认不出的直接淘汰。再看深底的侧边栏实景 —— 是否够亮、够清楚。
+    最后才比“哪个更像你要的气质”。</p>
+    <p>6 套均为 <code>viewBox="0 0 64 64"</code> 的矢量源文件，可无损缩放；
+    定稿后我会按之前的规格产出 favicon（16/32/48/64 四档）、200×200 首屏图、256×256 侧边栏/登录图。</p>
+  </footer>
+
+</div>
+</body>
+</html>

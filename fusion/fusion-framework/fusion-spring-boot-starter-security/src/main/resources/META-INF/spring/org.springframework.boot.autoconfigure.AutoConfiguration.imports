@@ -1,0 +1,3 @@
+com.fusion.framework.security.config.FusionSecurityAutoConfiguration
+com.fusion.framework.security.config.FusionWebSecurityConfigurerAdapter
+com.fusion.framework.operatelog.config.FusionOperateLogConfiguration

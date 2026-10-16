@@ -1,0 +1,47 @@
+package com.fusion.module.mes.enums.wm;
+
+import com.fusion.framework.common.core.ArrayValuable;
+import com.fusion.module.mes.enums.MesOrderStatusConstants;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.Arrays;
+
+/**
+ * MES 物料消耗记录状态枚举
+ *
+ */
+@Getter
+@AllArgsConstructor
+public enum MesWmItemConsumeStatusEnum implements ArrayValuable<Integer> {
+
+    /**
+     * 草稿
+     *
+     * 对应 MesWmItemConsumeService#generateItemConsume 方法
+     */
+    PREPARE(MesOrderStatusConstants.PREPARE, "草稿"),
+    /**
+     * 已完成
+     *
+     * 对应 MesWmItemConsumeService#finishItemConsume 方法
+     */
+    FINISHED(MesOrderStatusConstants.FINISHED, "已完成");
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(MesWmItemConsumeStatusEnum::getStatus).toArray(Integer[]::new);
+
+    /**
+     * 状态值
+     */
+    private final Integer status;
+    /**
+     * 状态名
+     */
+    private final String name;
+
+    @Override
+    public Integer[] array() {
+        return ARRAYS;
+    }
+
+}

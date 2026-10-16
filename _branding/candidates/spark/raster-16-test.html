@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>真实 16px 光栅化测试</title>
+<style>
+  body { margin:0; background:#F5F6F8; color:#111827;
+    font:13px/1.5 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif; }
+  .wrap { padding:22px 24px; }
+  h1 { font-size:17px; margin:0 0 4px; }
+  .sub { color:#6B7280; font-size:12px; margin:0 0 6px; }
+  .how { color:#374151; font-size:12px; background:#fff; border:1px solid #E5E7EB;
+    border-left:3px solid #409EFF; border-radius:6px; padding:9px 12px; margin:0 0 18px; }
+  table { border-collapse:separate; border-spacing:0 12px; }
+  th { text-align:left; font-size:11px; color:#6B7280; font-weight:600; padding:0 16px 0 0; }
+  td { padding:0 16px 0 0; vertical-align:middle; }
+  .cellwrap { display:flex; gap:12px; align-items:center; }
+  canvas { display:block; border-radius:6px; }
+  .c-light { background:#fff; border:1px solid #E5E7EB; }
+  .c-dark  { background:#001529; }
+  .c-app   { background:#fff; }
+  .nm { font-weight:700; }
+  .sm { font-size:11px; color:#6B7280; }
+  .real { font-size:11px; color:#9CA3AF; }
+  .v { font-size:11.5px; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>真实 16px 光栅化测试（canvas 光栅 → 放大）</h1>
+  <p class="sub">与上一张 CSS 缩放图不同：这里先用 canvas 把 SVG <b>真实绘制成 16×16 像素</b>，
+     关闭平滑后再放大 6 倍。看到的就是浏览器的真实 16px 结果，不存在矢量重绘的水分。</p>
+  <p class="how">每行三格：<b>①真实大小 16×16</b>（未放大，直接看本体） ·
+     <b>②浅底放大 6×</b> · <b>③深底放大 6×</b>。
+     判断标准：放大后四个尖角是否还能数出来；①里是否已经糊成一个点。</p>
+
+  <table>
+    <thead><tr>
+      <th>版本</th><th>① 真实 16px（原大小）</th><th>② 浅底 ×6</th><th>③ 深底 ×6</th><th>判断</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<script>
+const items = [
+  { file:'a0-baseline.svg',    name:'A0 原版',     note:'凹口 8.0' },
+  { file:'a1-thick.svg',       name:'A1 厚腰星',   note:'凹口 11.95' },
+  { file:'a2-duotone.svg',     name:'A2 双色融星', note:'凹口 11.95' },
+  { file:'a3-core.svg',        name:'A3 星核',     note:'凹口 11.95' },
+  { file:'a4-tile.svg',        name:'A4 星入方盒', note:'带底色' },
+  { file:'a5-spark-tile.svg',  name:'A5 火花方块', note:'镂空' }
+];
+
+function mk(w, h, cls) {
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  if (cls) c.className = cls;
+  return c;
+}
+
+// 把图像真实光栅化到 size×size，返回该 canvas
+function raster(img, size) {
+  const c = mk(size, size);
+  const x = c.getContext('2d');
+  x.imageSmoothingEnabled = false;
+  x.clearRect(0, 0, size, size);
+  x.drawImage(img, 0, 0, size, size);
+  return c;
+}
+
+// 放大 zoom 倍（最近邻）
+function zoom(src, zoom) {
+  const c = mk(src.width * zoom, src.height * zoom);
+  const x = c.getContext('2d');
+  x.imageSmoothingEnabled = false;
+  x.drawImage(src, 0, 0, c.width, c.height);
+  return c;
+}
+
+// 深底大图：先在透明底光栅，再合成到深色上
+function zoomOnDark(src, zoom, bg) {
+  const c = mk(src.width * zoom, src.height * zoom, 'c-dark');
+  const x = c.getContext('2d');
+  x.fillStyle = bg; x.fillRect(0, 0, c.width, c.height);
+  x.imageSmoothingEnabled = false;
+  x.drawImage(src, 0, 0, c.width, c.height);
+  return c;
+}
+
+const tbody = document.getElementById('rows');
+let loaded = 0;
+
+items.forEach(it => {
+  const img = new Image();
+  img.onload = () => {
+    const tr = document.createElement('tr');
+
+    const tdN = document.createElement('td');
+    tdN.innerHTML = '<div class="nm">' + it.name + '</div><div class="sm">' + it.note + '</div>';
+    tr.appendChild(tdN);
+
+    // ① 真实 16px，原大小（加个外框便于看）
+    const tdReal = document.createElement('td');
+    const box = document.createElement('div');
+    box.style.cssText = 'width:34px;height:34px;display:flex;align-items:center;' +
+      'justify-content:center;border:1px dashed #D1D5DB;border-radius:5px;background:#fff';
+    const real = raster(img, 16);
+    real.style.cssText = 'width:16px;height:16px';
+    box.appendChild(real);
+    tdReal.appendChild(box);
+    const z = document.createElement('div'); z.className = 'real'; z.textContent = '16×16 实际像素';
+    tdReal.appendChild(z);
+    tr.appendChild(tdReal);
+
+    // ② 浅底 ×6
+    const tdL = document.createElement('td');
+    const lw = document.createElement('div'); lw.className = 'cellwrap';
+    const big = zoom(real, 6);
+    big.className = 'c-light';
+    lw.appendChild(big);
+    tdL.appendChild(lw);
+    tr.appendChild(tdL);
+
+    // ③ 深底 ×6
+    const tdD = document.createElement('td');
+    const dw = document.createElement('div'); dw.className = 'cellwrap';
+    dw.appendChild(zoomOnDark(real, 6, '#001529'));
+    tdD.appendChild(dw);
+    tr.appendChild(tdD);
+
+    // 判断（留空，由人或后续填）
+    const tdV = document.createElement('td');
+    tdV.className = 'v';
+    tdV.textContent = it.name.startsWith('A0') ? '看：是否糊成一团' : '看：四角是否清楚';
+    tr.appendChild(tdV);
+
+    tbody.appendChild(tr);
+    loaded++;
+    if (loaded === items.length) document.title = 'READY';
+  };
+  img.onerror = () => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td colspan="5" style="color:#DC2626">加载失败: ' + it.file + '</td>';
+    tbody.appendChild(tr);
+    loaded++;
+    if (loaded === items.length) document.title = 'READY-WITH-ERRORS';
+  };
+  img.src = it.file;
+});
+</script>
+</body>
+</html>

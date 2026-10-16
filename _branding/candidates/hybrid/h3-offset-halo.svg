@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  H3 — 错位光环（Offset Halo）   ← 杂交自「C 错位光球」+ S5 核心轨道
+  取 C 的双色错位叠影（抖音式动感），但**改成两个错位圆环**：
+  叠影落在环上而不是整块实心球，因此比 C 更轻、在浅底上也不会糊成一团。
+  中央紫核保留 AI 语义。
+  关键词：融合（双环相交）· 科技动感 · 错位叠影
+  3 个元素。环与环错位 8 单位。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="错位光环">
+  <circle cx="36" cy="36" r="20" fill="none" stroke="#36CFC9" stroke-width="7"/>
+  <circle cx="28" cy="28" r="20" fill="none" stroke="#409EFF" stroke-width="7"/>
+  <circle cx="32" cy="32" r="7.5" fill="#8B5CF6"/>
+</svg>

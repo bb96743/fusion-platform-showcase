@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  H2 — 切角方块（Chamfer Square）   ← 杂交自「B 融合方块」
+  保留 B 的三个好做法：App 图标容器、渐变色块、中心白点；
+  去掉它那个位置随意的紫色角，改成**藏在圆角内侧的斜切楔形**——
+  只在圆角外露一线紫，像是两块材料叠合，比"贴一个三角"更有做工感。
+  关键词：融合（叠合）· AI 白核 · 科技切角
+  3 个元素。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="切角方块">
+  <defs>
+    <linearGradient id="h2g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#36CFC9"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <!-- 紫楔形先画（垫在下层），只有圆角外侧那一线会露出来 -->
+  <path d="M40 6 H58 V24 Z" fill="#8B5CF6"/>
+  <rect x="6" y="6" width="52" height="52" rx="15" fill="url(#h2g)"/>
+  <circle cx="32" cy="32" r="9" fill="#FFFFFF"/>
+</svg>

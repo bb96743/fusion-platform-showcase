@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  暗版候选（Dark, L=44%）
+  保持亮版的色相与饱和度，仅降低明度。
+  几何与亮版**完全相同**（只在渐变 stop-color 上改明度）：品牌渐变圆角方盒 +
+  中心 evenodd 镂空四角火花。亮版：#490CD5->#006EE0
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="暗版火花方块 L44">
+  <defs>
+    <linearGradient id="lgDark0" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#490CD5"/>
+      <stop offset="1" stop-color="#006EE0"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#lgDark0)" fill-rule="evenodd"
+        d="M20 4 H44 A16 16 0 0 1 60 20 V44 A16 16 0 0 1 44 60 H20 A16 16 0 0 1 4 44 V20 A16 16 0 0 1 20 4 Z
+           M32 15
+           C 33.3 27, 37 30.7, 49 32
+           C 37 33.3, 33.3 37, 32 49
+           C 30.7 37, 27 33.3, 15 32
+           C 27 30.7, 30.7 27, 32 15 Z"/>
+</svg>

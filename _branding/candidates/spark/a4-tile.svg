@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A4 — 星入方盒（Spark in Tile）  ← 优化目标：适配深浅底 + 一二处通用性
+  A 是"透明剪影"形态，直接放深底/浅底都要为对比度操心。
+  这里沿用你概念板 B 的做法：给它一个**品牌渐变圆角方盒**当底，
+  星做白色。好处有三：
+    ① 自带底色，放任何背景上都成立（不必再管深浅底）；
+    ② 与主流 App 图标形态一致（favicon / 桌面图标直接可用）；
+    ③ 白色星＋彩色底，对比度天然达标。
+  星仍用 A1 的厚腰几何，大小收到 34（盒内留足呼吸位）。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="星入方盒">
+  <defs>
+    <linearGradient id="a4bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#a4bg)"/>
+  <g transform="translate(32 32) scale(0.53125) translate(-32 -32)">
+    <path d="M 32 4 C 34.2 21, 43 29.8, 60 32 C 43 34.2, 34.2 43, 32 60 C 29.8 43, 21 34.2, 4 32 C 21 29.8, 29.8 21, 32 4 Z"
+          fill="#FFFFFF"/>
+  </g>
+</svg>

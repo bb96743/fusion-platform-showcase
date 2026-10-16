@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  S4 — 脉冲条（Pulse Bars）
+  简化思路：**四根粗圆角竖条**，同一种元素重复出节奏感 ——
+  音频波形/数据脉冲的通用语言，主流 AI 与音视频类 App 大量使用（与抖音的「节奏」意象同源）。
+  关键词：AI · 数据脉冲 · 节奏
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="脉冲条">
+  <defs>
+    <linearGradient id="s4g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#s4g)">
+    <rect x="8"  y="22" width="9" height="20" rx="4.5"/>
+    <rect x="21" y="12" width="9" height="40" rx="4.5"/>
+    <rect x="34" y="18" width="9" height="28" rx="4.5"/>
+    <rect x="47" y="26" width="9" height="12" rx="4.5"/>
+  </g>
+</svg>

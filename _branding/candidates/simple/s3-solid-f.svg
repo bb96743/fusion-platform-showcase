@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  S3 — 实心 F（Solid F）
+  简化思路：把上一版「F 电路」的走线全部去掉，只留**一个厚实的实心字母**。
+  参考知乎「知」字标的做法：品牌识别优先，字母本身就是图形，小尺寸最稳。
+  关键词：品牌首字母 · 实心剪影 · 识别度
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="实心 F">
+  <defs>
+    <linearGradient id="s3g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <path d="M18 10 H48 V22 H32 V28 H45 V40 H32 V54 H18 Z" fill="url(#s3g)"/>
+</svg>

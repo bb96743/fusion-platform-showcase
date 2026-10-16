@@ -1,0 +1,7 @@
+com.fusion.framework.apilog.config.FusionApiLogAutoConfiguration
+com.fusion.framework.jackson.config.FusionJacksonAutoConfiguration
+com.fusion.framework.swagger.config.FusionSwaggerAutoConfiguration
+com.fusion.framework.web.config.FusionWebAutoConfiguration
+com.fusion.framework.xss.config.FusionXssAutoConfiguration
+com.fusion.framework.banner.config.FusionBannerAutoConfiguration
+com.fusion.framework.encrypt.config.FusionApiEncryptAutoConfiguration

@@ -1,0 +1,58 @@
+# ============================================================================
+#  Fusion 项目根 .gitignore
+#
+#  本仓库是**单仓库（monorepo）**：后端 `fusion/` 与前端 `fusion-ui-admin/`
+#  各自还保留着自己的 .gitignore；本文件负责跨项目的构建产物、运行期日志
+#  与分析中间产物。
+# ============================================================================
+
+# ---- 构建产物 ----
+fusion/target/
+fusion/**/target/
+fusion/.flattened-pom.xml
+fusion-ui-admin/node_modules/
+fusion-ui-admin/dist*/
+fusion-ui-admin/.eslintcache
+*.class
+
+# ---- IDE ----
+.idea/
+*.iml
+.vscode/
+
+# ---- 运行期 ----
+_runtime/logs/
+_runtime/run/
+_runtime/redis/*.log
+_runtime/redis/*.rdb
+*.log
+
+# ---- 本机专属配置（不入库，模板见同名 .example）----
+# 后端：本机数据库口令等机器相关配置
+fusion/fusion-server/src/main/resources/application-local.yaml
+# 前端：本地开发登录预填值（含管理员口令）
+fusion-ui-admin/.env.env.local
+# 根目录 .env：docker-compose 用的口令等（注意只匹配根目录这一个文件，
+# 前端的 .env / .env.prod 等是**故意入库**的构建配置）
+/.env
+# 说明：上面几个文件的模板是 *.example，已入库；首次拉起环境时复制即可。
+#      规则与理由见 需求分析文档.md 第 14 章「运行与协作约定」。
+
+# ---- 分析中间产物 ----
+# _analysis/ 顶层的报告要入库（它们是分析结论的证据）；
+# _scratch/ 是过程文件（含解包出来的六万多个三方源码文件），不入库。
+_analysis/_scratch/
+
+# ---- 替换前快照（不入库）----
+# _rebrand-backup/ 是 04-rebrand.ps1 留下的「替换前」快照，磁盘保留、版本库排除。
+# 原因：它含 1549 个 yudao 文件、1501 个 iocoder 文件与 3 个真实第三方密钥，
+# 入库会直接推翻「品牌零残留」。上游原始代码仍在只读源仓库
+# D:\Javaproject\ruoyi-vue-pro。详见 需求分析文档.md 13.16.6。
+_rebrand-backup/
+
+# ---- 本机专属 ----
+**/.DS_Store
+Thumbs.db
+
+# 架构图工作目录（archify 生成；是否入库由项目决定，默认不入）
+.archify/

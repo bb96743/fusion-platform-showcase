@@ -1,0 +1,13 @@
+# pnpm 配置
+#
+# 说明：上游这份文件是一份**未配置的占位模板**（值为字面量 "set this to true or false"），
+# 会导致 pnpm 拒绝为这些依赖执行安装脚本，进而 esbuild 二进制缺失、Vite 构建失败。
+# 这里按实际需要显式允许：
+#   esbuild        —— Vite 的底层打包器，必须允许（否则二进制未安装）
+#   @parcel/watcher—— 文件监听（dev 模式热更新用）
+#   core-js-pure / es5-ext —— 仅为消除 pnpm 的告警而允许；如无必要可改回 false
+allowBuilds:
+  '@parcel/watcher': true
+  core-js-pure: true
+  es5-ext: true
+  esbuild: true

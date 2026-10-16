@@ -1,0 +1,138 @@
+# ============================================================================
+#  CI —— 后端构建 + 前端构建 + 冒烟
+#
+#  覆盖三件事：
+#    后端构建  → mvn -f fusion/pom.xml clean package
+#    前端构建  → pnpm install --frozen-lockfile && pnpm build:prod
+#    冒烟测试  → 起后端 + curl 健康检查 + admin 登录拿 token
+#
+#  数据库初始化：直接把 fusion/sql/mysql/*.sql 按顺序灌进 MySQL 服务容器。
+#  顺序敏感（② 必须在 ④ 之前，见 fusion/README.md）。
+# ============================================================================
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke:
+    name: 构建 + 冒烟
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci-root-password
+          MYSQL_DATABASE: fusion
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pci-root-password"
+          --health-interval=10s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s --health-timeout=5s --health-retries=20
+
+    env:
+      # 与 fusion-server/src/main/resources/application-prod.yaml 里的占位变量对应
+      FUSION_DB_URL: jdbc:mysql://127.0.0.1:3306/fusion?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true
+      FUSION_DB_USERNAME: root
+      FUSION_DB_PASSWORD: ci-root-password
+      FUSION_REDIS_HOST: 127.0.0.1
+      # smoke-test.ps1 用它与 application-local.yaml 同源的读取方式；CI 里没有那个文件，
+      # 直接用环境变量传入（见 smoke-test.ps1 的 -Password 参数）
+      ADMIN_PASSWORD: ci-admin-password
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 准备 JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: 准备 Node 22 与 pnpm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 安装 pnpm
+        run: npm i -g pnpm@11
+
+      # ---- 初始化数据库（顺序敏感：② 必须在 ④ 之前，见 fusion/README.md）----
+      - name: 初始化数据库
+        run: |
+          set -e
+          MYSQL="mysql -h 127.0.0.1 -uroot -pci-root-password fusion"
+          $MYSQL < fusion/sql/mysql/fusion-init.sql
+          $MYSQL < fusion/sql/mysql/fusion-modules.sql
+          $MYSQL < fusion/sql/mysql/quartz.sql
+          $MYSQL < fusion/sql/mysql/optional/jimureport-ddl-only.sql
+          $MYSQL < fusion/sql/mysql/optional/jimureport-supplement-2.5.1.sql
+          # 迁移（schema_migration 表由 db-migrate 自举）
+          $MYSQL < fusion/sql/mysql/migrations/V001__seed-ai-chat-roles.sql
+
+      # ---- 设置 CI 用的管理员口令（覆盖 SQL 里的占位符）----
+      - name: 设置管理员口令
+        run: |
+          set -e
+          # SQL 种子里的 password 是 REPLACE_WITH_YOUR_OWN_BCRYPT_HASH 占位符，
+          # 这里写入 ci-admin-password 的 bcrypt 值（仅供 CI 容器内冒烟登录）。
+          HASH='$2b$10$DswidcRYf2hm/PDXsEPBlu1bLJiES3V7iVO/HQmIikjwnhNmzXkp2'
+          mysql -h 127.0.0.1 -uroot -pci-root-password fusion \
+            -e "UPDATE system_users SET password='$HASH' WHERE id=1"
+
+      # ---- 后端 ----
+      - name: 后端构建与测试
+        run: mvn -B -f fusion/pom.xml clean package
+
+      # ---- 前端 ----
+      - name: 前端依赖与 lint
+        working-directory: fusion-ui-admin
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm lint
+
+      - name: 前端构建
+        working-directory: fusion-ui-admin
+        run: pnpm build:prod
+
+      # ---- 冒烟 ----
+      - name: 启动后端
+        run: |
+          java -jar fusion/fusion-server/target/fusion-server.jar --spring.profiles.active=prod \
+            > backend-ci.log 2>&1 &
+          for i in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:48080/actuator/health >/dev/null 2>&1; then echo "后端已就绪"; exit 0; fi
+            sleep 2
+          done
+          echo "后端未就绪，日志末尾："; tail -50 backend-ci.log; exit 1
+
+      - name: 冒烟测试（admin 登录 + 拉取当前用户）
+        run: |
+          set -e
+          RESP=$(curl -fsS -X POST http://127.0.0.1:48080/admin-api/system/auth/login \
+            -H 'Content-Type: application/json' -H 'tenant-id: 1' \
+            -d "{\"username\":\"admin\",\"password\":\"$ADMIN_PASSWORD\"}")
+          echo "$RESP" | head -c 400; echo
+          TOKEN=$(echo "$RESP" | sed -n 's/.*"accessToken":"\([^"]*\)".*/\1/p')
+          if [ -z "$TOKEN" ]; then echo "登录未拿到 accessToken"; exit 1; fi
+          echo "登录成功，accessToken 长度 ${#TOKEN}"
+
+      - name: 上传日志（失败时）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs
+          path: |
+            backend-ci.log
+            **/target/surefire-reports/**
+          if-no-files-found: ignore

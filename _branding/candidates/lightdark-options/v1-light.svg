@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  v1 亮版（纯白底，无描边）
+  白色方盒 + 品牌渐变火花。放在深色侧边栏上最醒目。
+  几何与 A5 完全一致：圆角方盒 + 四角火花。火花始终为品牌渐变，仅方盒底色在"白/黑"间切换。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="v1 亮版（纯白底，无描边）">
+  <defs>
+    <linearGradient id="v1ls" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="54" height="54" rx="15" fill="#FFFFFF"/>
+  <path d="M32 15 C 33.3 27, 37 30.7, 49 32 C 37 33.3, 33.3 37, 32 49 C 30.7 37, 27 33.3, 15 32 C 27 30.7, 30.7 27, 32 15 Z" fill="url(#v1ls)"/>
+</svg>

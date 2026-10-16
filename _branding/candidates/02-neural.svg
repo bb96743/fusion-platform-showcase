@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  候选 02 — 神经核心（Neural Core）
+  理念：四个外围节点连向一个中心核 —— 神经网络的最小完整结构，直接表达 AI；
+  「多路汇于一核」同时也是融合。
+  关键词：AI · 神经节点 · 中心化算力
+  颜色：连线 #409EFF；外节点 #409EFF；核心 #409EFF -> #36CFC9 渐变
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="神经核心">
+  <defs>
+    <linearGradient id="c2g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <g stroke="#409EFF" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M15 15 L32 32"/>
+    <path d="M49 15 L32 32"/>
+    <path d="M15 49 L32 32"/>
+    <path d="M49 49 L32 32"/>
+  </g>
+  <circle cx="15" cy="15" r="4.5" fill="#409EFF"/>
+  <circle cx="49" cy="15" r="4.5" fill="#409EFF"/>
+  <circle cx="15" cy="49" r="4.5" fill="#409EFF"/>
+  <circle cx="49" cy="49" r="4.5" fill="#409EFF"/>
+  <circle cx="32" cy="32" r="9" fill="url(#c2g)"/>
+</svg>

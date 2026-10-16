@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  H4 — 汇流脉冲（Merge Pulse）   ← 杂交自 S4 脉冲条 + 「A/D 的渐变语汇」
+  五根条的高度向中心递增再递减，**包络线本身就是"多路汇入"**：
+  比 S4 的四根等高并列更能读出"收敛"，也比 A 的四角星更不像通用 AI 符号。
+  关键词：AI 数据脉冲 · 融合（向心收敛）· 节奏
+  5 个元素（同一母题重复）。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="汇流脉冲">
+  <defs>
+    <linearGradient id="h4g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="0.5" stop-color="#6E8CFB"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#h4g)">
+    <rect x="4.5"  y="27" width="7" height="10" rx="3.5"/>
+    <rect x="16.5" y="21" width="7" height="22" rx="3.5"/>
+    <rect x="28.5" y="10" width="7" height="44" rx="3.5"/>
+    <rect x="40.5" y="21" width="7" height="22" rx="3.5"/>
+    <rect x="52.5" y="27" width="7" height="10" rx="3.5"/>
+  </g>
+</svg>

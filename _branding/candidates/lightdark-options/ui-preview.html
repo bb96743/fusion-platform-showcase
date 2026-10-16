@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>项目配置 · Logo 开关（改版预览）</title>
+<style>
+  body{margin:0;background:#F5F6F8;font:13px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;color:#111827}
+  .row{display:flex;gap:20px;padding:22px;align-items:flex-start;flex-wrap:wrap}
+  .drawer{width:340px;background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:16px;
+    box-shadow:0 8px 24px rgba(15,23,42,.06)}
+  .dtitle{font-size:15px;font-weight:700;border-bottom:1px solid #F1F3F5;padding-bottom:10px;margin-bottom:14px}
+  .divider{display:flex;align-items:center;gap:10px;color:#909399;font-size:12px;margin:16px 0 10px}
+  .divider:before,.divider:after{content:'';height:1px;background:#EBEEF5;flex:1}
+  .center{text-align:center}
+  /* 分段按钮（模拟 Element Plus RadioButton） */
+  .seg{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid #DCDFE6}
+  .seg button{border:0;background:#fff;padding:7px 16px;font-size:12px;cursor:pointer;color:#606266;
+    font-family:inherit;border-right:1px solid #DCDFE6}
+  .seg button:last-child{border-right:0}
+  .seg button.on{background:#409EFF;color:#fff}
+  .preview{display:flex;align-items:center;gap:10px;margin-top:14px;justify-content:center}
+  .pvbox{width:54px;height:54px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none}
+  .pvbox img{width:34px;height:34px;display:block}
+  .pvtext{text-align:left;font-size:12px;line-height:1.5;color:#6B7280}
+  .pvtext b{display:block;color:#374151;font-weight:600}
+  .uploadlbl{margin-top:14px;font-size:12px;color:#4B5563}
+  .upbox{margin:6px auto 0;width:110px;height:110px;border:1px dashed #DCDFE6;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;background:#FAFBFC}
+  .upbox img{width:92px;height:92px;display:block}
+  .desc{margin-top:6px;font-size:12px;color:#909399}
+  .btns{margin-top:12px;display:flex;gap:8px;justify-content:center}
+  .btns button{border:0;border-radius:4px;padding:7px 15px;font-size:12px;cursor:pointer;font-family:inherit}
+  .btns .p{background:#409EFF;color:#fff}
+  .btns .d{background:#fff;color:#606266;border:1px solid #DCDFE6}
+  .note{width:360px;background:#fff;border:1px solid #E5E7EB;border-left:3px solid #409EFF;
+    border-radius:8px;padding:12px 14px;font-size:12.5px;color:#374151}
+  .note b{color:#111827}
+</style></head>
+<body>
+<div class="row">
+
+  <!-- 默认：深色侧边栏（light） -->
+  <div class="drawer">
+    <div class="dtitle">项目配置</div>
+    <div class="center">
+      <div class="divider">主题</div>
+      <div class="seg"><button>☀</button><button class="on">☾</button></div>
+
+      <div class="divider">项目 Logo</div>
+      <div class="seg">
+        <button class="on">深色侧边栏</button>
+        <button>浅色侧边栏</button>
+      </div>
+
+      <div class="preview">
+        <div class="pvbox" style="background:#001529"><img src="logo-white.png" alt=""></div>
+        <div class="pvtext">
+          <b>白色图标 —— 侧边栏是深色时选它（系统默认）</b>
+          左侧是当前版本放进对应侧边栏底色的效果
+        </div>
+      </div>
+
+      <div class="uploadlbl">当前侧边栏配色使用的图标</div>
+      <div class="upbox"><img src="logo-white.png" alt=""></div>
+      <div class="desc">侧边栏与登录页共用，建议正方形图片</div>
+
+      <div class="btns"><button class="p">保存</button><button class="d">恢复内置图片</button></div>
+    </div>
+  </div>
+
+  <!-- 切到：浅色侧边栏（dark） -->
+  <div class="drawer">
+    <div class="dtitle">项目配置</div>
+    <div class="center">
+      <div class="divider">主题</div>
+      <div class="seg"><button>☀</button><button class="on">☾</button></div>
+
+      <div class="divider">项目 Logo</div>
+      <div class="seg">
+        <button>深色侧边栏</button>
+        <button class="on">浅色侧边栏</button>
+      </div>
+
+      <div class="preview">
+        <div class="pvbox" style="background:#ffffff;border:1px solid #E5E7EB"><img src="logo-black.png" alt=""></div>
+        <div class="pvtext">
+          <b>黑色图标 —— 侧边栏是浅色时选它</b>
+          左侧是当前版本放进对应侧边栏底色的效果
+        </div>
+      </div>
+
+      <div class="uploadlbl">当前侧边栏配色使用的图标</div>
+      <div class="upbox"><img src="logo-black.png" alt=""></div>
+      <div class="desc">侧边栏与登录页共用，建议正方形图片</div>
+
+      <div class="btns"><button class="p">保存</button><button class="d">恢复内置图片</button></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>改了什么：</b>
+    <ul style="margin:6px 0 0;padding-left:18px">
+      <li>开关文案：<code>亮版 / 暗版</code> → <b>深色侧边栏 / 浅色侧边栏</b></li>
+      <li>新增<b>实时预览</b>：把当前版本放进它适配的底色，一眼看出选对没有</li>
+      <li>上传区加了标题「当前侧边栏配色使用的图标」，避免误以为只改了一处</li>
+      <li>后台配置值仍是 <code>light</code>/<code>dark</code>，<b>接口与数据零改动</b></li>
+    </ul>
+  </div>
+
+</div>
+</body></html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>16px 真实光栅化验证</title>
+<style>
+  body{margin:0;background:#F5F6F8;color:#111827;font:13px/1.5 -apple-system,"Microsoft YaHei",sans-serif}
+  .wrap{padding:18px 20px}
+  h1{font-size:16px;margin:0 0 3px}
+  .sub{color:#6B7280;font-size:11.5px;margin:0 0 12px}
+  table{border-collapse:separate;border-spacing:0 8px}
+  th{text-align:left;font-size:10.5px;color:#6B7280;font-weight:600;padding:0 14px 0 0}
+  td{padding:0 14px 0 0;vertical-align:middle}
+  .lens{width:96px;height:96px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;overflow:hidden}
+  .lens.white{background:#fff;border:1px solid #E5E7EB}
+  .lens.dark{background:#001529}
+  .lens img{width:16px;height:16px;display:block;image-rendering:pixelated;transform:scale(6)}
+  .real{font-size:10px;color:#9CA3AF}
+</style></head>
+<body><div class="wrap">
+  <h1>16px 真实 16×16 像素（放大 6 倍，pixelated）</h1>
+  <p class="sub">这是浏览器按 16×16 真实光栅化后的结果，放大 6 倍便于肉眼检查。左侧白底、右侧深色侧边栏底色。</p>
+  <table><thead><tr><th>版本</th><th>白底 ×6</th><th>深色侧边栏 #001529 ×6</th><th>判断</th></tr></thead>
+  <tbody id="rows"></tbody></table>
+</div>
+<script>
+const items = [
+  {f:'logo.png',      n:'亮版（白盒）', note:'默认'},
+  {f:'logo-dark.png', n:'暗版（黑盒）', note:'可选'}
+];
+const tb = document.getElementById('rows'); let done = 0;
+items.forEach(it => {
+  const img = new Image();
+  img.onload = () => {
+    const tr = document.createElement('tr');
+    const td0 = document.createElement('td');
+    td0.innerHTML = '<b>'+it.n+'</b><div class="real">'+it.note+'</div>';
+    tr.appendChild(td0);
+
+    // 真实光栅化到 16x16
+    const c = document.createElement('canvas'); c.width = 16; c.height = 16;
+    const x = c.getContext('2d'); x.imageSmoothingEnabled = false;
+    x.clearRect(0,0,16,16); x.drawImage(img, 0, 0, 16, 16);
+
+    // 真实大小 + 两背景放大
+    [['real', 16, 16], ['white', 96, 96], ['dark', 96, 96]].forEach(([kind, w, h], i) => {
+      const td = document.createElement('td');
+      const box = document.createElement('div');
+      if (i === 0) {
+        box.style.cssText = 'width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px dashed #D1D5DB;border-radius:5px;background:#fff';
+        const rc = document.createElement('canvas'); rc.width = 16; rc.height = 16;
+        rc.getContext('2d').drawImage(c, 0, 0);
+        rc.style.cssText = 'width:16px;height:16px;display:block';
+        box.appendChild(rc);
+      } else {
+        box.className = 'lens ' + kind;
+        const zc = document.createElement('canvas'); zc.width = 96; zc.height = 96;
+        const zx = zc.getContext('2d');
+        if (kind === 'dark') { zx.fillStyle = '#001529'; zx.fillRect(0,0,96,96); }
+        zx.imageSmoothingEnabled = false;
+        zx.drawImage(c, 0, 0, 96, 96);
+        box.appendChild(zc);
+      }
+      td.appendChild(box);
+      tr.appendChild(td);
+    });
+
+    const tdv = document.createElement('td');
+    tdv.style.fontSize = '11.5px'; tdv.style.fontWeight = '600';
+    tdv.textContent = '看：方块轮廓是否还在、火花是否可辨';
+    tr.appendChild(tdv);
+
+    tb.appendChild(tr);
+    if (++done === items.length) document.title = 'READY';
+  };
+  img.onerror = () => { done++; document.title = 'ERR-' + it.f; };
+  img.src = it.f;
+});
+</script></body></html>

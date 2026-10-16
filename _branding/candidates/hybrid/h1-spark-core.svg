@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  H1 — 火花汇核（Spark Core）   ← 杂交自「A 智能闪光」+ S5 核心轨道
+  取 A 的四角星（AI 通用语义），但把「四臂向心收敛」明确出来：
+  中央加一颗对比色核点，让「多路汇入核心」＝融合 也成立，而不只是"AI 闪光"。
+  关键词：AI · 融合（四臂汇核）· 极简
+  2 个元素。核点用紫罗兰（见预览页关于配色的说明）。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="火花汇核">
+  <defs>
+    <linearGradient id="h1g" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 4
+           C 33.6 20.4, 43.6 30.4, 60 32
+           C 43.6 33.6, 33.6 43.6, 32 60
+           C 30.4 43.6, 20.4 33.6, 4 32
+           C 20.4 30.4, 30.4 20.4, 32 4 Z" fill="url(#h1g)"/>
+  <circle cx="32" cy="32" r="7" fill="#8B5CF6"/>
+</svg>

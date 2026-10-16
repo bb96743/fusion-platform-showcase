@@ -1,0 +1,50 @@
+#!/bin/sh
+# ============================================================================
+#  commit-msg 钩子 —— 校验提交信息是否符合约定（Conventional Commits）
+#
+#  启用方式（每个克隆执行一次）：
+#    git config core.hooksPath .githooks
+#  或跑 _runtime\check-env.ps1 -Fix（它会把这条配置一并设好）
+#
+#  约定详见 需求分析文档.md「运行与协作约定」一节。
+#
+#  ⚠️ 本文件必须是 **LF 换行**：CRLF 会让 Git for Windows 的 sh 解析失败。
+#     根目录 .gitattributes 里已为 .githooks/* 指定 eol=lf。
+# ============================================================================
+
+msg_file="$1"
+first_line=$(head -n 1 "$msg_file" 2>/dev/null)
+
+# 空提交信息交给 git 自己处理
+[ -z "$first_line" ] && exit 0
+
+# 自动生成的信息放行
+case "$first_line" in
+    Merge*|Revert*|fixup!*|squash!*|"Auto-merged"*)
+        exit 0
+        ;;
+esac
+
+if printf '%s' "$first_line" | grep -Eq '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9._/-]+\))?!?: .+'; then
+    exit 0
+fi
+
+cat <<'EOF'
+
+  ✖ 提交信息不符合约定（Conventional Commits）
+
+    格式：<type>(<scope>): <subject>
+
+    例：
+      feat(system): 用户列表增加部门筛选
+      fix(infra): 修复文件上传的 master 配置指向演示存储
+      docs(f1): 补充一键建库脚本说明
+      chore: 清理孤儿定时任务
+
+    允许的 type：feat fix docs style refactor perf test build ci chore revert
+    紧急时可跳过本次检查：git commit --no-verify
+
+    约定详见 需求分析文档.md 的「运行与协作约定」一节。
+
+EOF
+exit 1

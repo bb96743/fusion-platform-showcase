@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A5 — 火花方块（Spark Tile）  ← A 与 B 的概念合体
+  把你的 A（四角星）与 B（渐变圆角方块＋白点）合成一套：
+  方块做品牌渐变底，中心**镂空一颗四角火花**（evenodd 挖洞，不是叠加白星）——
+  镂空让底色透出来，比"贴一颗白星"更透气、也更有做工感；
+  火花四臂向心 ＝ AI 灵感，方块容器 ＝ 中台/平台。
+  火花半宽 17（比 A4 里的星更大），保证 16px 下仍成型。
+  注：defs 放在引用之前，避免前向引用的兼容性风险。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="火花方块">
+  <defs>
+    <linearGradient id="a5g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#a5g)" fill-rule="evenodd"
+        d="M20 4 H44 A16 16 0 0 1 60 20 V44 A16 16 0 0 1 44 60 H20 A16 16 0 0 1 4 44 V20 A16 16 0 0 1 20 4 Z
+           M32 15
+           C 33.3 27, 37 30.7, 49 32
+           C 37 33.3, 33.3 37, 32 49
+           C 30.7 37, 27 33.3, 15 32
+           C 27 30.7, 30.7 27, 32 15 Z"/>
+</svg>

@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fusion 图标候选 · 杂交版 6 套</title>
+<style>
+  :root {
+    --brand: #409EFF; --cyan: #36CFC9; --violet: #8B5CF6;
+    --ink:#111827; --muted:#6B7280; --line:#E5E7EB; --page:#F5F6F8;
+    --menu-bg:#001529; --menu-text:#bfcbd9;
+    --board:#0E1622;   /* 对齐你那张概念板的深底 */
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink);
+    font:15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+  .wrap { max-width:1240px; margin:0 auto; padding:38px 24px 72px; }
+  h1 { margin:0 0 10px; font-size:26px; }
+  .kw { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; padding:0; list-style:none; }
+  .kw li { font-size:12px; padding:3px 10px; border-radius:999px;
+    background:rgba(64,158,255,.12); color:#1d6fbf; font-weight:600; }
+  .note { background:#fff; border:1px solid var(--line); border-left:3px solid var(--brand);
+    border-radius:8px; padding:14px 16px; font-size:13.5px; color:#374151; }
+  .note b { color:var(--ink); }
+  .note code { background:#f3f4f6; padding:1px 5px; border-radius:4px; font-size:12.5px; }
+  .note ul { margin:8px 0 0; padding-left:20px; } .note li { margin:3px 0; }
+  .warn { border-left-color:#F59E0B; background:#FFFBEB; }
+
+  /* ── 顶部：对齐你那张概念板的深底版式 ── */
+  .board { background:var(--board); border-radius:16px; padding:34px 22px 26px; margin:24px 0 30px; }
+  .board h2 { color:#fff; font-size:15px; margin:0 0 4px; text-align:center; font-weight:600; }
+  .board .bhint { color:#7c8798; font-size:12px; text-align:center; margin:0 0 26px; }
+  .board .cells { display:grid; grid-template-columns:repeat(3,1fr); gap:30px 18px; }
+  @media (max-width:820px) { .board .cells { grid-template-columns:repeat(2,1fr); } }
+  .bcell { text-align:center; }
+  .bcell .bicon { height:118px; display:flex; align-items:center; justify-content:center; }
+  .bcell .bicon img { width:104px; height:104px; display:block; }
+  .bcell .bname { color:#fff; font-size:14px; font-weight:700; margin-top:12px; }
+  .bcell .bdesc { color:#8b96a8; font-size:11.5px; margin-top:3px; }
+
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (max-width:880px) { .grid { grid-template-columns:1fr; } }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px;
+    display:flex; flex-direction:column; gap:13px; }
+  .card h3 { margin:0; font-size:16px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .card h3 .no { font-size:12px; font-weight:700; color:#fff; background:var(--brand);
+    border-radius:6px; padding:2px 7px; }
+  .card h3 .en { font-size:12px; font-weight:500; color:var(--muted); }
+  .lineage { font-size:11.5px; color:#7c3aed; background:#F5F3FF;
+    border-radius:6px; padding:4px 9px; display:inline-block; }
+  .sec { font-size:11.5px; color:var(--muted); margin:0; font-weight:600;
+    letter-spacing:.3px; text-transform:uppercase; }
+
+  .stage { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .tile { border-radius:10px; height:132px; display:flex; align-items:center;
+    justify-content:center; border:1px solid var(--line); }
+  .tile.light { background:#fff; }
+  .tile.dark { background:var(--board); border-color:transparent; }
+  .tile img { width:92px; height:92px; display:block; }
+
+  .ladder { display:grid; gap:8px; }
+  .ladder .row { display:flex; align-items:center; gap:10px; }
+  .ladder .lbl { width:100px; flex:none; font-size:11.5px; color:var(--muted); }
+  .pair { display:flex; gap:8px; align-items:center; }
+  .chip { width:66px; height:60px; border-radius:8px; display:flex; align-items:center;
+    justify-content:center; border:1px solid var(--line); }
+  .chip.light { background:#fff; }
+  .chip.dark { background:var(--menu-bg); border-color:transparent; }
+  .chip img { display:block; }
+
+  .side { background:var(--menu-bg); border-radius:10px; padding:10px 12px;
+    display:flex; align-items:center; gap:10px; }
+  .side img { width:40px; height:40px; display:block; flex:none; }
+  .side .brand { display:flex; flex-direction:column; line-height:1.2; }
+  .side .brand b { color:#fff; font-size:15px; font-weight:700; }
+  .side .brand span { color:var(--menu-text); font-size:11px; }
+
+  .desc { margin:0; font-size:13px; color:#4B5563; }
+  .desc b { color:var(--ink); }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; }
+  .tags span { font-size:11px; padding:2px 8px; border-radius:999px;
+    background:#F3F4F6; color:#4B5563; }
+  footer.foot { margin-top:30px; font-size:12.5px; color:var(--muted); }
+  footer.foot b { color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Fusion 图标候选 · 杂交版 6 套</h1>
+  <ul class="kw"><li>融合</li><li>AI</li><li>科技感</li><li>取两边长处</li></ul>
+
+  <div class="note">
+    <b>这一批的思路：</b>把你那张 A–D 板里的<b>有效语汇</b>，接到我之前那几套的<b>骨架上</b>，取双方长处。
+    <ul>
+      <li>从你板上取的：渐变填充、切角/错位这类现代 AI 产品语汇、白点镂空、紫罗兰。</li>
+      <li>从我那几套取的：元素极简（1~5 个）、粗壮实心不靠细线、16px 可辨。</li>
+      <li>同时<b>避开 A 的问题</b>：四角星如今几乎是 AI 产品通用符号（Gemini/Copilot 一路），ownability 低，而且只讲 AI、不讲融合 —— H1 就是针对这一点改的。</li>
+    </ul>
+  </div>
+
+  <div class="board">
+    <h2>6 套一览（与你那张板同样的深底版式）</h2>
+    <p class="bhint">深底 #0E1622，图标 104px</p>
+    <div class="cells">
+      <div class="bcell"><div class="bicon"><img src="h1-spark-core.svg" alt="火花汇核"></div>
+        <div class="bname">H1 · 火花汇核</div><div class="bdesc">四角星 + 对比色核点 · 四臂汇核</div></div>
+      <div class="bcell"><div class="bicon"><img src="h2-chamfer.svg" alt="切角方块"></div>
+        <div class="bname">H2 · 切角方块</div><div class="bdesc">圆角方 + 内藏楔形 · 中心白核</div></div>
+      <div class="bcell"><div class="bicon"><img src="h3-offset-halo.svg" alt="错位光环"></div>
+        <div class="bname">H3 · 错位光环</div><div class="bdesc">双环错位叠影 + 紫核</div></div>
+      <div class="bcell"><div class="bicon"><img src="h4-merge-pulse.svg" alt="汇流脉冲"></div>
+        <div class="bname">H4 · 汇流脉冲</div><div class="bdesc">五条向心包络 · 多路汇入</div></div>
+      <div class="bcell"><div class="bicon"><img src="h5-diagonal.svg" alt="对角双色"></div>
+        <div class="bname">H5 · 对角双色</div><div class="bdesc">方块对角切两色 + 白核</div></div>
+      <div class="bcell"><div class="bicon"><img src="h6-spark-f.svg" alt="火花 F"></div>
+        <div class="bname">H6 · 火花 F</div><div class="bdesc">实心 F + 镂空火花</div></div>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b>⚠️ 配色需要你拍板：</b>你那张板用了<b>紫罗兰</b>（我取 <code>#8B5CF6</code>），但它
+    <b>不在项目主题色里</b> —— 目前主题只有主色 <code>#409EFF</code>（<code>app.ts</code> 的 <code>elColorPrimary</code>）。
+    这版我把它当作<b>小面积强调色</b>（核点/楔形/对角的一半），所以如果你不想扩品牌色，
+    把这些紫换回 <code>#36CFC9</code> 青即可，每套改一处、形状完全不动。
+  </div>
+
+  <main class="grid">
+
+    <article class="card">
+      <h3><span class="no">H1</span>火花汇核 <span class="en">Spark Core</span></h3>
+      <span class="lineage">血缘：A 智能闪光 × S5 核心轨道</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="h1-spark-core.svg" alt=""></div>
+        <div class="tile dark"><img src="h1-spark-core.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="h1-spark-core.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="h1-spark-core.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="h1-spark-core.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="h1-spark-core.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="h1-spark-core.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="h1-spark-core.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="h1-spark-core.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">保留 A 的 AI 语义，但<b>核点让「四臂向心汇入」成立</b> —— 于是它同时讲 AI 和融合，
+      且比纯四角星多一个自有细节。</p>
+      <div class="tags"><span>AI</span><span>融合</span><span>极简</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">H2</span>切角方块 <span class="en">Chamfer Square</span></h3>
+      <span class="lineage">血缘：B 融合方块（改良）</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="h2-chamfer.svg" alt=""></div>
+        <div class="tile dark"><img src="h2-chamfer.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="h2-chamfer.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="h2-chamfer.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="h2-chamfer.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="h2-chamfer.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="h2-chamfer.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="h2-chamfer.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="h2-chamfer.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">B 的三个好做法全留（容器、渐变、白核），只把<b>紫色角改成藏在圆角内侧的斜切楔形</b>：
+      只在圆角外露一线紫，像两块材料叠合，比贴一个三角更有做工感。</p>
+      <div class="tags"><span>融合</span><span>AI 白核</span><span>科技切角</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">H3</span>错位光环 <span class="en">Offset Halo</span></h3>
+      <span class="lineage">血缘：C 错位光球 × S5 核心轨道</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="h3-offset-halo.svg" alt=""></div>
+        <div class="tile dark"><img src="h3-offset-halo.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="h3-offset-halo.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="h3-offset-halo.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="h3-offset-halo.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="h3-offset-halo.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="h3-offset-halo.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="h3-offset-halo.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="h3-offset-halo.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">取 C 的错位叠影，但<b>把叠影落在"环"上而不是整块实心球</b> ——
+      更轻，浅底上也不会糊成一团；两环相交仍然讲融合，紫核保留 AI。</p>
+      <div class="tags"><span>融合</span><span>科技动感</span><span>错位叠影</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">H4</span>汇流脉冲 <span class="en">Merge Pulse</span></h3>
+      <span class="lineage">血缘：S4 脉冲条 × A/D 的渐变语汇</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="h4-merge-pulse.svg" alt=""></div>
+        <div class="tile dark"><img src="h4-merge-pulse.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="h4-merge-pulse.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="h4-merge-pulse.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="h4-merge-pulse.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="h4-merge-pulse.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="h4-merge-pulse.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="h4-merge-pulse.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="h4-merge-pulse.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">条高向中心递增再递减，<b>包络线本身就是「多路汇入」</b> ——
+      比 S4 的等高并列更能读出收敛，也比四角星更不像通用 AI 符号。</p>
+      <div class="tags"><span>AI 脉冲</span><span>向心收敛</span><span>节奏</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">H5</span>对角双色 <span class="en">Diagonal Split</span></h3>
+      <span class="lineage">血缘：B 融合方块 × S2 双半合圆</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="h5-diagonal.svg" alt=""></div>
+        <div class="tile dark"><img src="h5-diagonal.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="h5-diagonal.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="h5-diagonal.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="h5-diagonal.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="h5-diagonal.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="h5-diagonal.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="h5-diagonal.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="h5-diagonal.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">方块被对角线切成两色、中央压白核。比 B 的「渐变 + 紫角」<b>更大胆也更简洁</b>：
+      两色对角＝两个来源合成一体，缩到 16px 仍看得出是两个色块。</p>
+      <div class="tags"><span>融合</span><span>AI 白核</span><span>强对比</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">H6</span>火花 F <span class="en">Spark F</span></h3>
+      <span class="lineage">血缘：S3 实心 F × A 智能闪光</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="h6-spark-f.svg" alt=""></div>
+        <div class="tile dark"><img src="h6-spark-f.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="h6-spark-f.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="h6-spark-f.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="h6-spark-f.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="h6-spark-f.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="h6-spark-f.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="h6-spark-f.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="h6-spark-f.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">留住 S3 那个「任何尺寸都不糊」的厚实字母，在顶横里<b>镂空一颗四角火花</b>（挖洞，不是叠加）。
+      品牌识别与 AI 语义同时成立。⚠️ 火花只有 9 单位，<b>16px 下看不清</b>，32px 以上才读得出。</p>
+      <div class="tags"><span>品牌首字母</span><span>AI 火花</span><span>自有细节</span></div>
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <p><b>我的排序：</b>H6（识别＋AI 双全，但小尺寸有代价）≈ H5（最干净的两色合一）
+    &gt; H2（最像成熟 App 图标）&gt; H1（AI 语义最强）&gt; H3 &gt; H4。</p>
+    <p>如果你更看重点「融合」：H5 / H2 最稳；更看重点「AI」：H1 / H6；更想要「当下科技感」：H3 / H4。</p>
+  </footer>
+
+</div>
+</body>
+</html>

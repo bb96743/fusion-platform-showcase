@@ -1,0 +1,2 @@
+com.fusion.framework.redis.config.FusionRedisAutoConfiguration
+com.fusion.framework.redis.config.FusionCacheAutoConfiguration

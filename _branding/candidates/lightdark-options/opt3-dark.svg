@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  方案3 暗版（极深）
+  渐变 #1B044D -> #002347，保持 A5 镂空。
+  火花为 evenodd 镂空，透出**背景色**，故外观随所处底色变化。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="方案3 暗版（极深）">
+  <defs>
+    <linearGradient id="o3d" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B044D"/>
+      <stop offset="1" stop-color="#002347"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#o3d)" fill-rule="evenodd"
+        d="M20 4 H44 A16 16 0 0 1 60 20 V44 A16 16 0 0 1 44 60 H20 A16 16 0 0 1 4 44 V20 A16 16 0 0 1 20 4 Z           M32 15 C 33.3 27, 37 30.7, 49 32 C 37 33.3, 33.3 37, 32 49 C 30.7 37, 27 33.3, 15 32 C 27 30.7, 30.7 27, 32 15 Z"/>
+</svg>

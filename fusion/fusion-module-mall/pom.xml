@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>fusion</artifactId>
+        <groupId>com.fusion</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>fusion-module-mall</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+
+    <description>
+        商城大模块，由 product 商品、promotion 营销、trade 交易、statistics 统计等组成
+    </description>
+    <modules>
+        <module>fusion-module-product</module>
+        <module>fusion-module-promotion</module>
+        <module>fusion-module-trade</module>
+        <module>fusion-module-statistics</module>
+        <!--
+            特殊：为什么会有 fusion-module-trade-api 呢？
+                fusion-module-promotion 和 fusion-module-trade 之间相互循环依赖，所以抽出 fusion-module-trade-api 模块，这样：
+                1. fusion-module-promotion 依赖 fusion-module-trade-api
+                2. fusion-module-trade 依赖 fusion-module-promotion
+            从而不存在相互（循环）依赖，即 fusion-module-trade => fusion-module-promotion => fusion-module-trade-api
+         -->
+        <module>fusion-module-trade-api</module>
+    </modules>
+
+</project>

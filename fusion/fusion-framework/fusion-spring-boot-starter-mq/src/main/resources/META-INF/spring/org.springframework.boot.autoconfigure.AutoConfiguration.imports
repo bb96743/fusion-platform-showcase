@@ -1,0 +1,3 @@
+com.fusion.framework.mq.redis.config.FusionRedisMQProducerAutoConfiguration
+com.fusion.framework.mq.redis.config.FusionRedisMQConsumerAutoConfiguration
+com.fusion.framework.mq.rabbitmq.config.FusionRabbitMQAutoConfiguration

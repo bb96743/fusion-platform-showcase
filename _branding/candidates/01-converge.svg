@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  候选 01 — 三流汇一（Converging Streams）
+  理念：三条数据流自左汇入一点，再汇成一条主干 —— 「融合」的直接隐喻，兼有数据汇聚的科技感。
+  关键词：融合 · 数据汇聚 · 单向汇聚
+  颜色：线条 #409EFF（实心，保证 16px 下锐利）；核心节点 #409EFF -> #36CFC9 渐变
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="三流汇一">
+  <defs>
+    <linearGradient id="c1g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="#409EFF" stroke-width="6" stroke-linecap="round">
+    <path d="M9 15 C 25 15, 27 32, 35 32"/>
+    <path d="M9 32 H 35"/>
+    <path d="M9 49 C 25 49, 27 32, 35 32"/>
+    <path d="M35 32 H 55"/>
+  </g>
+  <circle cx="35" cy="32" r="5.5" fill="url(#c1g)"/>
+</svg>

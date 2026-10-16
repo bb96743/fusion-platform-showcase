@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  H6 — 火花 F（Spark F）   ← 杂交自 S3 实心 F + 「A 智能闪光」
+  把 S3 那个厚实、任何尺寸都不糊的字母留下来，
+  在**顶横内镂空一颗四角火花**（evenodd 挖洞，不是叠加）——
+  品牌识别与 AI 语义同时成立，且镂空属于"自有细节"，比直接贴一个通用火花符号更难被替换。
+  关键词：品牌首字母 · AI 火花 · 自有细节
+  2 个元素；⚠️ 火花直径仅 9 单位，**16px 下会看不清**，32px 以上才读得出。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="火花 F">
+  <defs>
+    <linearGradient id="h6g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#409EFF"/>
+      <stop offset="1" stop-color="#36CFC9"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#h6g)" fill-rule="evenodd"
+        d="M18 10 H48 V22 H32 V28 H45 V40 H32 V54 H18 Z
+           M40 11.5 C 40.45 14.3, 41.4 15.5, 44.5 16
+           C 41.4 16.5, 40.45 17.7, 40 20.5
+           C 39.55 17.7, 38.6 16.5, 35.5 16
+           C 38.6 15.5, 39.55 14.3, 40 11.5 Z"/>
+</svg>

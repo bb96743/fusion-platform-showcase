@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  方案1 亮版（白底盒）
+  白底圆角方盒 + 品牌渐变火花；细描边让它在白页上仍能看出方形边界。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="方案1 亮版（白底盒）">
+  <defs>
+    <linearGradient id="o1ls" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#409EFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <path d="M32 15 C 33.3 27, 37 30.7, 49 32 C 37 33.3, 33.3 37, 32 49 C 30.7 37, 27 33.3, 15 32 C 27 30.7, 30.7 27, 32 15 Z" fill="url(#o1ls)"/>
+</svg>

@@ -1,0 +1,44 @@
+package com.fusion.module.system.dal.mysql.logger;
+
+import com.fusion.framework.common.pojo.PageResult;
+import com.fusion.framework.mybatis.core.mapper.BaseMapperX;
+import com.fusion.framework.mybatis.core.query.LambdaQueryWrapperX;
+import com.fusion.module.system.api.logger.dto.OperateLogPageReqDTO;
+import com.fusion.module.system.controller.admin.logger.vo.operatelog.OperateLogPageReqVO;
+import com.fusion.module.system.dal.dataobject.logger.OperateLogDO;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDateTime;
+
+@Mapper
+public interface OperateLogMapper extends BaseMapperX<OperateLogDO> {
+
+    default PageResult<OperateLogDO> selectPage(OperateLogPageReqVO pageReqDTO) {
+        return selectPage(pageReqDTO, new LambdaQueryWrapperX<OperateLogDO>()
+                .eqIfPresent(OperateLogDO::getUserId, pageReqDTO.getUserId())
+                .eqIfPresent(OperateLogDO::getBizId, pageReqDTO.getBizId())
+                .likeIfPresent(OperateLogDO::getType, pageReqDTO.getType())
+                .likeIfPresent(OperateLogDO::getSubType, pageReqDTO.getSubType())
+                .likeIfPresent(OperateLogDO::getAction, pageReqDTO.getAction())
+                .betweenIfPresent(OperateLogDO::getCreateTime, pageReqDTO.getCreateTime())
+                .orderByDesc(OperateLogDO::getId));
+    }
+
+    default PageResult<OperateLogDO> selectPage(OperateLogPageReqDTO pageReqDTO) {
+        return selectPage(pageReqDTO, new LambdaQueryWrapperX<OperateLogDO>()
+                .eqIfPresent(OperateLogDO::getType, pageReqDTO.getType())
+                .eqIfPresent(OperateLogDO::getBizId, pageReqDTO.getBizId())
+                .eqIfPresent(OperateLogDO::getUserId, pageReqDTO.getUserId())
+                .orderByDesc(OperateLogDO::getId));
+    }
+
+    /**
+     * 物理删除早于指定时间的日志（分页删除，避免单次锁表过大）。
+     * 写法与 infra 侧 ApiAccessLogMapper#deleteByCreateTimeLt 完全同构 —— 见 V018 的系统日志清理。
+     */
+    @Delete("DELETE FROM system_operate_log WHERE create_time < #{createTime} LIMIT #{limit}")
+    Integer deleteByCreateTimeLt(@Param("createTime") LocalDateTime createTime, @Param("limit") Integer limit);
+
+}

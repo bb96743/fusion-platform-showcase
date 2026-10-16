@@ -1,0 +1,3 @@
+com.fusion.framework.datasource.config.FusionDataSourceAutoConfiguration
+com.fusion.framework.mybatis.config.FusionMybatisAutoConfiguration
+com.fusion.framework.translate.config.FusionTranslateAutoConfiguration

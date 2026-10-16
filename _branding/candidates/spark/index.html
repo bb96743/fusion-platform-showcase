@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A 版优化 · 智能闪光系列</title>
+<style>
+  :root {
+    --brand:#409EFF; --cyan:#36CFC9; --violet:#8B5CF6;
+    --ink:#111827; --muted:#6B7280; --line:#E5E7EB; --page:#F5F6F8;
+    --menu-bg:#001529; --menu-text:#bfcbd9;
+    --board:#0E1622;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink);
+    font:15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+  .wrap { max-width:1240px; margin:0 auto; padding:38px 24px 72px; }
+  h1 { margin:0 0 10px; font-size:26px; }
+  .kw { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; padding:0; list-style:none; }
+  .kw li { font-size:12px; padding:3px 10px; border-radius:999px;
+    background:rgba(64,158,255,.12); color:#1d6fbf; font-weight:600; }
+  .note { background:#fff; border:1px solid var(--line); border-left:3px solid var(--brand);
+    border-radius:8px; padding:14px 16px; font-size:13.5px; color:#374151; margin-bottom:16px; }
+  .note b { color:var(--ink); }
+  .note code { background:#f3f4f6; padding:1px 5px; border-radius:4px; font-size:12.5px; }
+  .note ul { margin:8px 0 0; padding-left:20px; } .note li { margin:3px 0; }
+  .warn { border-left-color:#F59E0B; background:#FFFBEB; }
+  .ok { border-left-color:#10B981; background:#ECFDF5; }
+
+  .board { background:var(--board); border-radius:16px; padding:30px 20px 24px; margin:22px 0 28px; }
+  .board h2 { color:#fff; font-size:15px; margin:0 0 3px; text-align:center; font-weight:600; }
+  .board .bhint { color:#7c8798; font-size:12px; text-align:center; margin:0 0 24px; }
+  .board .cells { display:grid; grid-template-columns:repeat(3,1fr); gap:26px 14px; }
+  @media (max-width:860px) { .board .cells { grid-template-columns:repeat(2,1fr); } }
+  .bcell { text-align:center; }
+  .bcell .bicon { height:112px; display:flex; align-items:center; justify-content:center; }
+  .bcell .bicon img { width:100px; height:100px; display:block; }
+  .bcell .bname { color:#fff; font-size:13.5px; font-weight:700; margin-top:10px; }
+  .bcell .bdesc { color:#8b96a8; font-size:11.5px; margin-top:2px; }
+  .bcell.base .bname { color:#9aa5b5; }
+  .bcell.base .bdesc { color:#5f6b7c; }
+  .tagbase { display:inline-block; font-size:10px; color:#cbd5e1; border:1px solid #33415a;
+    border-radius:4px; padding:0 5px; margin-left:5px; vertical-align:middle; }
+
+  /* ── 16px 压力测试：这是本轮的核心 ── */
+  .stress { background:#fff; border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px 24px; margin-bottom:28px; }
+  .stress h2 { margin:0 0 4px; font-size:17px; }
+  .stress p.sub { margin:0 0 18px; font-size:12.5px; color:var(--muted); }
+  table { border-collapse:separate; border-spacing:0 10px; width:100%; }
+  th { text-align:left; font-size:11px; color:var(--muted); font-weight:600; padding:0 12px 4px 0; }
+  td { padding:0 12px 0 0; vertical-align:middle; font-size:13px; }
+  .lens { width:92px; height:92px; display:flex; align-items:center; justify-content:center;
+    border-radius:8px; border:1px solid var(--line); overflow:hidden; }
+  .lens.light { background:#fff; }
+  .lens.dark { background:var(--menu-bg); border-color:transparent; }
+  .lens img { width:16px; height:16px; display:block;
+    image-rendering:pixelated; transform:scale(5.75); }
+  .verdict { font-size:11.5px; font-weight:600; }
+  .v-bad { color:#DC2626; } .v-good { color:#059669; } .v-mid { color:#D97706; }
+
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (max-width:880px) { .grid { grid-template-columns:1fr; } }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px;
+    display:flex; flex-direction:column; gap:13px; }
+  .card.base { background:#FAFAFB; }
+  .card h3 { margin:0; font-size:16px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .card h3 .no { font-size:12px; font-weight:700; color:#fff; background:var(--brand);
+    border-radius:6px; padding:2px 7px; }
+  .card.base h3 .no { background:#9CA3AF; }
+  .card h3 .en { font-size:12px; font-weight:500; color:var(--muted); }
+  .goal { font-size:11.5px; color:#0369a1; background:#E0F2FE;
+    border-radius:6px; padding:4px 9px; display:inline-block; }
+  .goal.gray { color:#4B5563; background:#F3F4F6; }
+  .sec { font-size:11.5px; color:var(--muted); margin:0; font-weight:600;
+    letter-spacing:.3px; text-transform:uppercase; }
+  .stage { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .tile { border-radius:10px; height:130px; display:flex; align-items:center;
+    justify-content:center; border:1px solid var(--line); }
+  .tile.light { background:#fff; }
+  .tile.dark { background:var(--board); border-color:transparent; }
+  .tile img { width:90px; height:90px; display:block; }
+  .ladder { display:grid; gap:8px; }
+  .ladder .row { display:flex; align-items:center; gap:10px; }
+  .ladder .lbl { width:100px; flex:none; font-size:11.5px; color:var(--muted); }
+  .pair { display:flex; gap:8px; align-items:center; }
+  .chip { width:66px; height:60px; border-radius:8px; display:flex; align-items:center;
+    justify-content:center; border:1px solid var(--line); }
+  .chip.light { background:#fff; }
+  .chip.dark { background:var(--menu-bg); border-color:transparent; }
+  .chip img { display:block; }
+  .side { background:var(--menu-bg); border-radius:10px; padding:10px 12px;
+    display:flex; align-items:center; gap:10px; }
+  .side img { width:40px; height:40px; display:block; flex:none; }
+  .side .brand { display:flex; flex-direction:column; line-height:1.2; }
+  .side .brand b { color:#fff; font-size:15px; font-weight:700; }
+  .side .brand span { color:var(--menu-text); font-size:11px; }
+  .desc { margin:0; font-size:13px; color:#4B5563; }
+  .desc b { color:var(--ink); }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; }
+  .tags span { font-size:11px; padding:2px 8px; border-radius:999px;
+    background:#F3F4F6; color:#4B5563; }
+  footer.foot { margin-top:30px; font-size:12.5px; color:var(--muted); }
+  footer.foot b { color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>A 版优化 · 智能闪光系列</h1>
+  <ul class="kw"><li>以 A 为基准</li><li>融合</li><li>AI</li><li>科技感</li></ul>
+
+  <div class="note">
+    <b>这一批只做一件事：把「A · 智能闪光」优化到能真正用。</b>
+    <ul>
+      <li><b>A0</b> 是按你概念板复刻的<b>原版基准</b>，放在最前面，方便你并排看出改了什么。</li>
+      <li><b>A1–A3</b> 是三个<b>单点优化</b>，每个只解决一个具体问题，改动小、风险低。</li>
+      <li><b>A4–A5</b> 是<b>合体版</b>（星放进 App 图标容器 / 与 B 的概念合体），适合直接当图标用。</li>
+    </ul>
+  </div>
+
+  <div class="stress">
+    <h2>16px 压力测试 —— 本轮的核心命题</h2>
+    <p class="sub">A 最实际的问题是：凹口太深，缩到 16px 时四个尖角会互相糊掉。
+       下面把每一版按 16×16 渲染后放大 5.75 倍，直接看还认不认得出。
+       <b>更严格的一份在 <code>preview-16px-raster.png</code></b>：那里用 canvas 把 SVG 真实绘制成
+       16×16 像素后再放大（无矢量重绘的水分），结论以上面那份为准。</p>
+    <table>
+      <thead><tr>
+        <th>版本</th><th>浅底 16px</th><th>深底 16px</th><th>凹口深度</th><th>判断</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><b>A0 原版</b><br><span style="font-size:11px;color:#9CA3AF">基准</span></td>
+          <td><div class="lens light"><img src="a0-baseline.svg" alt=""></div></td>
+          <td><div class="lens dark"><img src="a0-baseline.svg" alt=""></div></td>
+          <td>8.0<br><span style="font-size:11px;color:#9CA3AF">28.6% 半径</span></td>
+          <td class="verdict v-bad">四臂发虚不等长，一团糊影</td>
+        </tr>
+        <tr>
+          <td><b>A1 厚腰星</b></td>
+          <td><div class="lens light"><img src="a1-thick.svg" alt=""></div></td>
+          <td><div class="lens dark"><img src="a1-thick.svg" alt=""></div></td>
+          <td>11.95<br><span style="font-size:11px;color:#059669">42.7% 半径</span></td>
+          <td class="verdict v-mid">能看出是四角星，但四角仍未锐利</td>
+        </tr>
+        <tr>
+          <td><b>A2 双色融星</b></td>
+          <td><div class="lens light"><img src="a2-duotone.svg" alt=""></div></td>
+          <td><div class="lens dark"><img src="a2-duotone.svg" alt=""></div></td>
+          <td>11.95<br><span style="font-size:11px;color:#059669">同 A1</span></td>
+          <td class="verdict v-good">16px 下左右两色仍可分（色差比形状耐缩小）</td>
+        </tr>
+        <tr>
+          <td><b>A3 星核</b></td>
+          <td><div class="lens light"><img src="a3-core.svg" alt=""></div></td>
+          <td><div class="lens dark"><img src="a3-core.svg" alt=""></div></td>
+          <td>11.95<br><span style="font-size:11px;color:#059669">同 A1</span></td>
+          <td class="verdict v-good">白核在 16px 下反而成为识别点（高反差）</td>
+        </tr>
+        <tr>
+          <td><b>A4 星入方盒</b></td>
+          <td><div class="lens light"><img src="a4-tile.svg" alt=""></div></td>
+          <td><div class="lens dark"><img src="a4-tile.svg" alt=""></div></td>
+          <td>11.95<br><span style="font-size:11px;color:#059669">同 A1</span></td>
+          <td class="verdict v-good">带底色，两底一致清晰</td>
+        </tr>
+        <tr>
+          <td><b>A5 火花方块</b></td>
+          <td><div class="lens light"><img src="a5-spark-tile.svg" alt=""></div></td>
+          <td><div class="lens dark"><img src="a5-spark-tile.svg" alt=""></div></td>
+          <td>—<br><span style="font-size:11px;color:#9CA3AF">镂空</span></td>
+          <td class="verdict v-good">方块＋火花都成型</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="board">
+    <h2>6 版一览（与你那张板同样的深底版式）</h2>
+    <p class="bhint">深底 #0E1622，图标 100px</p>
+    <div class="cells">
+      <div class="bcell base"><div class="bicon"><img src="a0-baseline.svg" alt=""></div>
+        <div class="bname">A0 · 原版<span class="tagbase">基准</span></div>
+        <div class="bdesc">你概念板的原始 A</div></div>
+      <div class="bcell"><div class="bicon"><img src="a1-thick.svg" alt=""></div>
+        <div class="bname">A1 · 厚腰星</div><div class="bdesc">凹口抬高，小尺寸可辨</div></div>
+      <div class="bcell"><div class="bicon"><img src="a2-duotone.svg" alt=""></div>
+        <div class="bname">A2 · 双色融星</div><div class="bdesc">左紫右蓝，补「融合」</div></div>
+      <div class="bcell"><div class="bicon"><img src="a3-core.svg" alt=""></div>
+        <div class="bname">A3 · 星核</div><div class="bdesc">中心白核，补自有细节</div></div>
+      <div class="bcell"><div class="bicon"><img src="a4-tile.svg" alt=""></div>
+        <div class="bname">A4 · 星入方盒</div><div class="bdesc">App 图标形态，白星彩底</div></div>
+      <div class="bcell"><div class="bicon"><img src="a5-spark-tile.svg" alt=""></div>
+        <div class="bname">A5 · 火花方块</div><div class="bdesc">A×B 合体，镂空火花</div></div>
+    </div>
+  </div>
+
+  <div class="note ok">
+    <b>✅ 核心结论（已用真实 16px 光栅化复核，见 preview-16px-raster.png）：</b>
+    A0 → A1 的改动画确实有效，但<b>没有一开始想的那么好</b>。
+    凹口由 8.0（28.6% 半径）抬到 11.95（42.7% 半径）后，16px 下从
+    「一团淡蓝糊影、四臂不等长发虚」变成「能看出是个四角星、更实更饱和」——
+    <b>但严格说仍不是「四个尖角清楚可辨」</b>，只是从「看不清」提升到「认得出」。
+    代价是比原版略敦实、锐利感少一点。
+    <br><br>
+    <b>真实光栅化给出的额外结论（重要）：</b>把 SVG 实际绘制成 16×16 像素后才发现，
+    <b>纯剪影的星在 16px 下都谈不上清晰</b>；<b>真正清晰的是带容器的 A4 / A5</b> ——
+    容器给了图形「质量」，这是纯剪影做不到的。
+    另外 <b>A3 的白核在 16px 下意外好用</b>（高反差形成识别点）。
+    <br>→ 因此建议<b>分场景用</b>：favicon（16px）用 A4 / A5，侧边栏与登录（40 / 48px）用 A1 / A2。
+  </div>
+
+  <div class="note warn">
+    <b>⚠️ 配色仍需你拍板：</b>本系列沿用你概念板的紫罗兰（取 <code>#8B5CF6</code>），但它
+    <b>不在项目主题色内</b>（主题只有 <code>app.ts</code> 的 <code>elColorPrimary #409EFF</code>）。
+    若不扩品牌色，把紫换成 <code>#36CFC9</code> 或直接改成纯蓝即可，形状完全不动。
+  </div>
+
+  <main class="grid">
+
+    <article class="card base">
+      <h3><span class="no">A0</span>原版基准 <span class="en">Baseline</span></h3>
+      <span class="goal gray">按你概念板复刻，仅用于对比</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="a0-baseline.svg" alt=""></div>
+        <div class="tile dark"><img src="a0-baseline.svg" alt=""></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="a0-baseline.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">几何：四角星，臂长 28，凹口最深点距中心 <b>8.0</b>（半径的 28.6%）。
+      已知短板：① 16px 会糊；② 只讲 AI 不讲融合；③ 通用符号缺自有细节；④ 紫色不在主题色内。</p>
+      <div class="tags"><span>基准</span><span>不推荐直接用</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">A1</span>厚腰星 <span class="en">Solid Spark</span></h3>
+      <span class="goal">优化目标：小尺寸可辨识性</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="a1-thick.svg" alt=""></div>
+        <div class="tile dark"><img src="a1-thick.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="a1-thick.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="a1-thick.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="a1-thick.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="a1-thick.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="a1-thick.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="a1-thick.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="a1-thick.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">只改一处：凹口由 <b>8.0 抬到 11.95</b>，曲线控制点由 p=0.75/q=5.0 改为 p=2.2/q=11.0。
+      剪影仍是四角星，但腰部有了"肉"。真实 16px 光栅化下：从「四臂发虚的一团糊影」
+      变成<b>「能看出是个四角星、但四角仍不锐利」</b>——即从"看不清"提升到"认得出"，
+      谈不上清晰。代价是略敦实。若 favicon 要真清晰，请用 A4 / A5。</p>
+      <div class="tags"><span>小尺寸</span><span>单点改动</span><span>推荐基础</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">A2</span>双色融星 <span class="en">Duotone Spark</span></h3>
+      <span class="goal">优化目标：补上「融合」语义</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="a2-duotone.svg" alt=""></div>
+        <div class="tile dark"><img src="a2-duotone.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="a2-duotone.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="a2-duotone.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="a2-duotone.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="a2-duotone.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="a2-duotone.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="a2-duotone.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="a2-duotone.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc"><b>剪影一个点都没改</b>（沿用 A1 几何），只沿中轴把星切成左右两色：
+      两半合成一颗星 ＝ 融合。<b>零成本补语义</b>，且色差比形状细节更耐缩小，16px 下分界仍可见。</p>
+      <div class="tags"><span>融合</span><span>零形状改动</span><span>耐缩小</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">A3</span>星核 <span class="en">Spark Core</span></h3>
+      <span class="goal">优化目标：增加自有细节</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="a3-core.svg" alt=""></div>
+        <div class="tile dark"><img src="a3-core.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="a3-core.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="a3-core.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="a3-core.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="a3-core.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="a3-core.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="a3-core.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="a3-core.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">中心压一颗白核（沿用你 B/C/D 里的白点语汇），
+      四臂于是读作<b>「向心汇入核心」</b>，补 AI 核心语义＋自有细节。
+      白核半径 6.5 &lt; 凹口 11.95，<b>不会顶穿边缘</b>（留 5.45 余量）。</p>
+      <div class="tags"><span>AI 核心</span><span>自有细节</span><span>白点</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">A4</span>星入方盒 <span class="en">Spark in Tile</span></h3>
+      <span class="goal">优化目标：适配深浅底 + 通用性</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="a4-tile.svg" alt=""></div>
+        <div class="tile dark"><img src="a4-tile.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="a4-tile.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="a4-tile.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="a4-tile.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="a4-tile.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="a4-tile.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="a4-tile.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="a4-tile.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">沿用你 B 的做法：<b>品牌渐变圆角方盒 + 白色星</b>。三点好处：
+      自带底色因而放任何背景都成立；与主流 App 图标形态一致（favicon 直接可用）；白星彩底对比度天然达标。</p>
+      <div class="tags"><span>App 图标</span><span>免管深浅底</span><span>favicon 友好</span></div>
+    </article>
+
+    <article class="card">
+      <h3><span class="no">A5</span>火花方块 <span class="en">Spark Tile</span></h3>
+      <span class="goal">A × B 概念合体</span>
+      <p class="sec">浅底 / 深底</p>
+      <div class="stage">
+        <div class="tile light"><img src="a5-spark-tile.svg" alt=""></div>
+        <div class="tile dark"><img src="a5-spark-tile.svg" alt=""></div>
+      </div>
+      <p class="sec">真实尺寸 · 上浅底下深底</p>
+      <div class="ladder">
+        <div class="row"><span class="lbl">48px · 登录页</span><div class="pair">
+          <div class="chip light"><img src="a5-spark-tile.svg" style="width:48px;height:48px" alt=""></div>
+          <div class="chip dark"><img src="a5-spark-tile.svg" style="width:48px;height:48px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">40px · 侧边栏</span><div class="pair">
+          <div class="chip light"><img src="a5-spark-tile.svg" style="width:40px;height:40px" alt=""></div>
+          <div class="chip dark"><img src="a5-spark-tile.svg" style="width:40px;height:40px" alt=""></div></div></div>
+        <div class="row"><span class="lbl">16px · 标签页</span><div class="pair">
+          <div class="chip light"><img src="a5-spark-tile.svg" style="width:16px;height:16px" alt=""></div>
+          <div class="chip dark"><img src="a5-spark-tile.svg" style="width:16px;height:16px" alt=""></div></div></div>
+      </div>
+      <p class="sec">侧边栏实景</p>
+      <div class="side"><img src="a5-spark-tile.svg" alt="">
+        <div class="brand"><b>Fusion</b><span>数智业务中台</span></div></div>
+      <p class="desc">把 A（四角星）与 B（渐变方块＋白点）合成一套：方块做渐变底，中心
+      <b>镂空</b>一颗四角火花（<code>evenodd</code> 挖洞，不是叠加白星）——
+      底色透出来更透气、更有做工感。火花放大到 17 半宽，保证 16px 仍成型。</p>
+      <div class="tags"><span>A×B 合体</span><span>镂空</span><span>做工感</span></div>
+    </article>
+
+  </main>
+
+  <footer class="foot">
+    <p><b>我的建议（按修正后的真实光栅化结论）：</b>A 的"灵感闪光"气质要保留、又要真正能用，
+    最务实的是<b>分场景选两版</b>：</p>
+    <p>· <b>favicon / 桌面图标（16px，最苛刻）</b> → <b>A4</b> 或 <b>A5</b>。
+    纯剪影的星在 16px 下都谈不上清晰，容器给了图形"质量"，这是唯一真正过关的路子。</p>
+    <p>· <b>侧边栏 / 登录页（40 / 48px，有余量）</b> → <b>A2（双色融星）</b> 最划算：
+    剪影一个点没改，只切两色就补上了「融合」语义，且色差比形状更耐缩小。
+    想再多一点自有细节就叠 <b>A3</b> 的白核（16px 下反而成了识别点）。</p>
+    <p>三个单点优化可以<b>自由叠加</b>（A1+A2+A3 ＝"厚腰＋双色＋白核"）。
+    告诉我组合方式与紫罗兰去留，我立刻出定稿并产出四档 favicon、200×200 首屏图、256×256 侧边栏/登录图。</p>
+  </footer>
+
+</div>
+</body>
+</html>

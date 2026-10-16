@@ -1,0 +1,198 @@
+# ============================================================================
+#  application-prod.yaml —— 生产环境（spring.profiles.active: prod）
+#
+#  ⚠️ 这是**模板**，F1 阶段建立，尚未在真实生产环境验证过。
+#     上线前请逐项核对，特别是标了 TODO 的地方。
+#
+#  ⚠️ 本文件**不含任何真实口令**：全部用 `${环境变量:默认值}` 形式，
+#     生产环境务必通过环境变量注入（不要把口令写回本文件）。
+#
+#  启用方式：java -jar fusion-server.jar --spring.profiles.active=prod
+#            或设置环境变量 SPRING_PROFILES_ACTIVE=prod
+#
+#  与 local / dev 的差异（这是本文件存在的意义）：
+#    · 数据库、Redis 地址与口令全部走环境变量，不再用 127.0.0.1 的本地默认值
+#    · Druid 监控台（/druid/*）**关闭**——它是内部工具，不应暴露在生产
+#    · SQL 与 Mapper 的 debug 日志**关闭**（生产开 debug 会泄露数据、拖慢性能）
+#    · 接口文档（/doc.html、/v3/api-docs）**关闭**
+#    · 图片验证码**开启**，mock 登录**关闭**
+#    · 定时任务（Quartz）**开启**（local 默认关闭）
+#    · 访问日志**开启**
+# ============================================================================
+
+server:
+  port: ${SERVER_PORT:48080}
+
+--- #################### 数据库相关配置 ####################
+
+spring:
+  autoconfigure:
+    # noinspection SpringBootApplicationYaml
+    exclude:
+      - org.springframework.ai.vectorstore.qdrant.autoconfigure.QdrantVectorStoreAutoConfiguration # 禁用 AI 模块的 Qdrant，手动创建
+      - org.springframework.ai.vectorstore.redis.autoconfigure.RedisVectorStoreAutoConfiguration # 禁用 AI 模块的 Redis，手动创建
+      - org.springframework.ai.vectorstore.milvus.autoconfigure.MilvusVectorStoreAutoConfiguration # 禁用 AI 模块的 Milvus，手动创建
+  datasource:
+    druid: # Druid 【监控】相关的全局配置
+      web-stat-filter:
+        enabled: false # 生产关闭监控统计
+      stat-view-servlet:
+        enabled: false # 生产关闭 /druid/* 监控台
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true # 只记录慢 SQL
+          slow-sql-millis: 500
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: false # 生产禁止多语句（local/dev 为 true，便于脚本执行）
+    dynamic: # 多数据源配置
+      druid:
+        initial-size: 10
+        min-idle: 10
+        max-active: 50
+        max-wait: 60000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 600000
+        max-evictable-idle-time-millis: 1800000
+        validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+      primary: master
+      datasource:
+        master:
+          # TODO 换成生产库地址；生产建议 useSSL=true
+          url: ${FUSION_DB_URL:jdbc:mysql://127.0.0.1:3306/fusion?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true}
+          username: ${FUSION_DB_USERNAME:root}
+          password: ${FUSION_DB_PASSWORD:} # TODO 必须通过环境变量注入
+        slave:
+          lazy: true
+          url: ${FUSION_DB_SLAVE_URL:${FUSION_DB_URL:jdbc:mysql://127.0.0.1:3306/fusion?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&nullCatalogMeansCurrent=true}}
+          username: ${FUSION_DB_SLAVE_USERNAME:${FUSION_DB_USERNAME:root}}
+          password: ${FUSION_DB_SLAVE_PASSWORD:${FUSION_DB_PASSWORD:}}
+
+  data:
+    redis:
+      host: ${FUSION_REDIS_HOST:127.0.0.1}
+      port: ${FUSION_REDIS_PORT:6379}
+      database: ${FUSION_REDIS_DATABASE:0}
+      password: ${FUSION_REDIS_PASSWORD:} # TODO 生产建议开启 Redis 密码
+
+--- #################### 定时任务相关配置 ####################
+
+spring:
+  quartz:
+    auto-startup: true # 生产需要执行 Job
+    scheduler-name: fusionScheduler
+    job-store-type: jdbc
+    wait-for-jobs-to-complete-on-shutdown: true
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: fusionScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            isClustered: ${FUSION_QUARTZ_CLUSTERED:true} # 多实例部署时必须为 true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 25
+
+--- #################### 接口文档相关配置 ####################
+
+# 生产关闭接口文档，避免暴露内部接口
+springdoc:
+  api-docs:
+    enabled: ${FUSION_API_DOCS_ENABLED:false}
+  swagger-ui:
+    enabled: ${FUSION_SWAGGER_ENABLED:false}
+
+knife4j:
+  enable: ${FUSION_SWAGGER_ENABLED:false}
+
+--- #################### 日志配置 ####################
+
+logging:
+  file:
+    name: ${user.home}/logs/${spring.application.name}.log
+  level:
+    root: INFO
+    # 生产不要开 SQL debug（会打印参数、拖慢性能、可能泄露数据）
+    com.fusion.module.system.dal.mysql: INFO
+    com.fusion.module.infra.dal.mysql: INFO
+    com.fusion.module.bpm.dal.mysql: INFO
+    com.fusion.module.report.dal.mysql: INFO
+    com.fusion.module.ai.dal.mysql: INFO
+    com.fusion.module.infra.dal.mysql.logger.ApiErrorLogMapper: INFO
+    com.fusion.module.infra.dal.mysql.job.JobLogMapper: INFO
+    com.fusion.module.infra.dal.mysql.file.FileConfigMapper: INFO
+    com.fusion.module.system.dal.mysql.sms.SmsChannelMapper: INFO
+    org.springframework.context.support.PostProcessorRegistrationDelegate: ERROR
+
+--- #################### Fusion 管理平台相关配置 ####################
+
+fusion:
+  captcha:
+    enable: true # 生产必须开启图片验证码
+  security:
+    mock-enable: false # 生产禁止 mock 登录
+  access-log:
+    enable: true # 生产开启访问日志
+  demo: false # 生产关闭演示模式
+  tenant:
+    enable: ${FUSION_TENANT_ENABLE:false} # 是否启用多租户 —— 已按 14.8 D3 关闭（保留开关，可改回 true）
+  # TODO 换成生产域名（用于支付回调等）
+  pay:
+    order-notify-url: ${FUSION_SITE_URL:https://your-domain.example}/admin-api/pay/notify/order
+    refund-notify-url: ${FUSION_SITE_URL:https://your-domain.example}/admin-api/pay/notify/refund
+    transfer-notify-url: ${FUSION_SITE_URL:https://your-domain.example}/admin-api/pay/notify/transfer
+  tencent-lbs-key: ${TENCENT_LBS_KEY:}
+
+--- #################### 微信公众号、小程序相关配置 ####################
+
+wx:
+  mp:
+    app-id: ${WX_MP_APP_ID:} # TODO 填入自有公众号
+    secret: ${WX_MP_SECRET:}
+    config-storage:
+      type: RedisTemplate
+      key-prefix: wx
+      http-client-type: HttpComponents
+  miniapp:
+    appid: ${WX_MINIAPP_APPID:} # TODO 填入自有小程序
+    secret: ${WX_MINIAPP_SECRET:}
+    config-storage:
+      type: RedisTemplate
+      key-prefix: wa
+      http-client-type: HttpComponents
+
+justauth:
+  enabled: ${JUSTAUTH_ENABLED:false} # 生产按需开启；开启前必须配好各平台自有凭据
+  type:
+    DINGTALK:
+      client-id: ${JUSTAUTH_DINGTALK_CLIENT_ID:}
+      client-secret: ${JUSTAUTH_DINGTALK_CLIENT_SECRET:}
+      ignore-check-redirect-uri: true
+    WECHAT_ENTERPRISE:
+      client-id: ${JUSTAUTH_WECOM_CLIENT_ID:}
+      client-secret: ${JUSTAUTH_WECOM_CLIENT_SECRET:}
+      agent-id: ${JUSTAUTH_WECOM_AGENT_ID:}
+      ignore-check-redirect-uri: true
+    WECHAT_MINI_PROGRAM:
+      client-id: ${wx.miniapp.appid}
+      client-secret: ${wx.miniapp.secret}
+      ignore-check-redirect-uri: true
+      ignore-check-state: true
+    WECHAT_MP:
+      client-id: ${wx.mp.app-id}
+      client-secret: ${wx.mp.secret}
+      ignore-check-redirect-uri: true
+  cache:
+    type: REDIS
+    prefix: 'social_auth_state:'
+    timeout: 24h
